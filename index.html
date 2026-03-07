@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded",function(){
       var parsed=JSON.parse(raw);
       if(!parsed.d||!parsed.s) return parsed;
       var str=decodeURIComponent(escape(atob(parsed.d)));
-      if(_hash(str+_S)!==parsed.s){localStorage.removeItem(key);return null;}
+      if(_hash(str+_S)!==parsed.s){ return null; } // Don't wipe — just return null
       return JSON.parse(str);
     }catch(e){return null;}
   };
@@ -135,9 +135,9 @@ document.addEventListener("DOMContentLoaded",function(){
     if(_blocked) return; _blocked=true;
     try{
       var k=localStorage.getItem("tw_user");
-      if(k){var u=JSON.parse(k);if(u&&u.name){var pk="tw_pdata_"+u.name.toLowerCase();var d=window._secLoad(pk);if(d){d.coins=0;window._secSave(pk,d);}}}
+      // Data preserved — only screen blocked
     }catch(e){}
-    document.body.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#04040f;color:#fff;font-family:monospace;text-align:center;padding:2rem;"><div style="font-size:3rem;margin-bottom:1rem">\u{1F6AB}</div><div style="font-size:1.1rem;color:#ff4444;margin-bottom:.5rem;font-weight:bold;">CHEATING DETECTED</div><div style="font-size:.75rem;color:#555;margin-bottom:1rem;">Account reset kar diya gaya.</div><div style="font-size:.65rem;color:#333;">TAP WAR ULTRA — Fair Play Only</div></div>';
+    document.body.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#04040f;color:#fff;font-family:monospace;text-align:center;padding:2rem;"><div style="font-size:3rem;margin-bottom:1rem">\u{1F6AB}</div><div style="font-size:1.1rem;color:#ff4444;margin-bottom:.5rem;font-weight:bold;">CHEATING DETECTED</div><div style="font-size:.75rem;color:#555;margin-bottom:1rem;">DevTools band karo.</div><button onclick="location.reload()" style="background:#ffd93d;color:#000;border:none;padding:.5rem 1.2rem;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:.5rem">Reload</button></div>';
   }
 
   // DevTools window size detect
@@ -632,7 +632,10 @@ function App(){
       const key = "tw_pdata_" + name.toLowerCase();
       const saved = localStorage.getItem(key);
       if(saved){
-        const d = JSON.parse(saved);
+        let d = null;
+        try{ d = window._secLoad ? window._secLoad(key) : null; }catch(e){}
+        if(!d){ try{ d = JSON.parse(saved); }catch(e2){} }
+        if(!d) return;
         if(d.stats) setStats(d.stats);
         if(d.ul) setUl(d.ul);
         if(d.played) setPlayed(new Set(d.played));
