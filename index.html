@@ -422,7 +422,7 @@ const EG=[
 {id:"cricket",e:"🏏",n:"Cricket Bat",c:["#22c55e","#15803d"],d:"Batting game!",desc:"Real cricket batting! Ball aati hai — sahi timing pe swing karo aur runs banao. 4s aur 6s ke liye perfect timing chahiye!",tip:"💡 Ball bilkul bat ke level pe aaye tab swing karo — bahut jaldi ya der karne pe miss!",diff:3,cat:"Reflex"},
 {id:"soccer",e:"⚽",n:"Soccer Tap",c:["#3b82f6","#1d4ed8"],d:"Goal karo!",desc:"Perfect timing pe tap karke ball ko goal mein daalo! Goalkeeper ko beat karo!",tip:"💡 Goalkeeper ka pattern dekho — alternating ya random? Predict karo!",diff:2,cat:"Reflex"},
 {id:"chess_q",e:"♟️",n:"Chess",c:["#d4a017","#8b6914"],d:"AI se khelo!",desc:"Real Chess vs AI! Pieces move karo, check aur checkmate karo. Center control karo, pieces develop karo, king ko safe rakho!",tip:"💡 Pahle e4 ya d4 se center lo! Knight aur Bishop jaldi develop karo. King ko castle karo!",diff:4,cat:"Strategy"},
-{id:"volleyball",e:"🏐",n:"Volleyball Tap",c:["#f97316","#ea580c"],d:"Rally banao!",desc:"Ball ko net ke upar se pass karo! Timing pe tap karo — miss mat karo!",tip:"💡 Ball ki speed ke saath rhythm banao — panic mat karo!",diff:2,cat:"Reflex"},
+
 {id:"speedclick",e:"🖱️",n:"Speed Click",c:["#ff6b6b","#ff8e53"],d:"5s max click!",desc:"5 seconds mein button ko jitni baar ho sake click/tap karo. Pure speed test!",tip:"💡 Puri palm se nahi — sirf fingertip se light taps — fastest way!",diff:1,cat:"Speed"},
 {id:"colorpick",e:"🎪",n:"Color Match",c:["#a29bfe","#6c5ce7"],d:"Shade match karo!",desc:"Target color se closest shade chuno! 4 options mein se exact match — color vision test!",tip:"💡 Saturation (brightness) pe focus karo — hue (color type) pe nahi!",diff:2,cat:"Brain"},
 {id:"trivia",e:"❓",n:"Trivia Quiz",c:["#00cec9","#0984e3"],d:"GK quiz!",desc:"General knowledge questions — Science, History, Sports, Tech. 4 options mein sahi jawab chuno!",tip:"💡 Wrong options eliminate karo pehle — answer automatically narrow hoga!",diff:2,cat:"Brain"},
@@ -452,6 +452,8 @@ const HG=[
 {id:"gravity",e:"🌌",n:"Gravity Dodge",c:["#6c5ce7","#a29bfe"],d:"Objects dodge!",desc:"Upar se girte objects se apna player bachao! Touch/swipe se move karo — survive karo jitna ho sake!",tip:"💡 Objects ke gaps predict karo — zigzag path sabse safe hoti hai!",diff:4,cat:"Reflex"},
 {id:"calcchain",e:"⛓️",n:"Calc Chain",c:["#00cec9","#55efc4"],d:"Speed calculate!",desc:"Lightning fast calculations — chain mein numbers add/subtract/multiply karte jao!",tip:"💡 Approximation technique use karo — exact answer se zyada speed important!",diff:4,cat:"Brain"},
 {id:"carddash",e:"🏃",n:"Card Dash",c:["#ff6b6b","#ffd93d"],d:"Endless run!",desc:"Endless runner! Cards swipe karo obstacles avoid karne ke liye. Jitna aage jao score utna zyada!",tip:"💡 Pattern recognize karo — obstacles repeating sequences mein aate hain!",diff:3,cat:"Speed"},
+{id:"towerstack",e:"🏗️",n:"Tower Stack",c:["#f59e0b","#ef4444"],d:"Blocks stack karo!",desc:"Moving block ko sahi time pe tap karo aur stack banao! Perfect place = bonus. Jitna accurate utna zyada score!",tip:"💡 Block ki speed dekho — center pe tap karo perfect bonus ke liye!",diff:2,cat:"Strategy"},
+{id:"cardodge",e:"🚗",n:"Car Dodge",c:["#22c55e","#3b82f6"],d:"Traffic dodge karo!",desc:"Car ko left/right move karo aur traffic se bachao! Speed badhti jaati hai — coins bhi collect karo!",tip:"💡 Aane wali cars ka pattern dekho — side lanes safer hoti hain!",diff:2,cat:"Reflex"},
 {id:"stackit",e:"🗼",n:"Stack It",c:["#6bcb77","#4d96ff"],d:"Blocks stack!",desc:"Moving platform pe blocks stack karo! Zyada precise stacking = bigger platform next level!",tip:"💡 Moving platform ka center point track karo — edge pe mat tap karo!",diff:3,cat:"Strategy"},
 {id:"colorlines",e:"🟣",n:"Color Lines",c:["#fd79a8","#a29bfe"],d:"5 match karo!",desc:"Ek hi color ke 5 dots ek line mein laao! Balls move karo strategically — board mat bharao!",tip:"💡 Long lines ke liye paths clear karo pehle — foresight > reaction!",diff:4,cat:"Puzzle"},
 {id:"numbomb",e:"💥",n:"Num Bomb",c:["#ff4757","#ff6b81"],d:"Bomb defuse!",desc:"Bomb defuse karo! Correct sequence mein numbers enter karo time khatam hone se pehle!",tip:"💡 Har attempt mein notes lo — process of elimination se code crack karo!",diff:4,cat:"Puzzle"},
@@ -728,7 +730,7 @@ function App(){
   };
   const onEnd=useCallback((rawScore,gid)=>{
     // ANTI-CHEAT: Score validation
-    const MAX_SCORES={tapwar:300,reaction:1300,memory:30,whack:60,stroop:60,mathblitz:60,simon:30,wordjum:20,rps:7,balloon:50,highlow:20,emojimem:20,numguess:100,colorflash:20,truefalse:60,tictac:5,typeeasy:60,oddout:30,coinflip:50,dotcon:50,snake:500,flappy:200,g2048:2048,nummem:20,tetris:9999,minesweep:100,breakout:500,typehard:40,gridmem:30,mathchain:50,wordchain:30,reflex:50,pattern:30,colornum:30,sudoku:100,anagram:20,gravity:300,calcchain:50,speedclick:200,colorpick:20,trivia:20,pingpong:50,breathe:100,emoji_quiz:20,fastmath:50,wordlen:30,carddash:9999,stackit:50,colorlines:200,numbomb:100,zipzap:500,bubbleshoot:300,knifehit:200,cricket:200,soccer:100,chess_q:3,volleyball:50,dotcon:50,coinflip:50,reflex:50,default:9999};
+    const MAX_SCORES={tapwar:300,reaction:1300,memory:30,whack:60,stroop:60,mathblitz:60,simon:30,wordjum:20,rps:7,balloon:50,highlow:20,emojimem:20,numguess:100,colorflash:20,truefalse:60,tictac:5,typeeasy:60,oddout:30,coinflip:50,dotcon:50,snake:500,flappy:200,g2048:2048,nummem:20,tetris:9999,minesweep:100,breakout:500,typehard:40,gridmem:30,mathchain:50,wordchain:30,reflex:50,pattern:30,colornum:30,sudoku:100,anagram:20,gravity:300,calcchain:50,speedclick:200,colorpick:20,trivia:20,pingpong:50,breathe:100,emoji_quiz:20,fastmath:50,wordlen:30,carddash:9999,towerstack:9999,cardodge:9999,stackit:50,colorlines:200,numbomb:100,zipzap:500,bubbleshoot:300,knifehit:200,cricket:200,soccer:100,chess_q:3,dotcon:50,coinflip:50,reflex:50,default:9999};
     const cap = MAX_SCORES[gid] || MAX_SCORES.default;
     const score = (typeof rawScore==='number'&&!isNaN(rawScore)) ? Math.min(Math.max(0,Math.floor(rawScore)),cap) : 0;
     saveScoreToFirebase(nm,score,gid);
@@ -935,7 +937,7 @@ function App(){
 
   if(sc==="game"&&ag){
     const gP={game:ag,name:nm,onEnd,onBack:()=>setSc("home")};
-    const M={tapwar:TapWar,reaction:Reaction,memory:MemGame,whack:WhackGame,stroop:StroopGame,mathblitz:MathBlitz,simon:SimonGame,wordjum:WordJumble,rps:RPSGame,balloon:BalloonGame,highlow:HighLow,emojimem:EmojiMatch,numguess:NumGuess,colorflash:ColorFlash,truefalse:TrueFalse,tictac:TicTac,typeeasy:TypeEasy,oddout:OddOut,coinflip:CoinFlip,dotcon:DotConnect,cricket:CricketQuiz,soccer:SoccerTap,chess_q:ChessQuiz,volleyball:VolleyballTap,snake:SnakeGame,flappy:FlappyGame,g2048:Game2048,nummem:NumMem,tetris:TetrisGame,minesweep:MineGame,breakout:Breakout,typehard:TypeHard,gridmem:GridMem,mathchain:MathChain,wordchain:WordChain,reflex:ReflexGame,pattern:PatternGame,colornum:ColorNum,sudoku:SudokuGame,anagram:Anagram,gravity:GravityGame,calcchain:CalcChain,speedclick:SpeedClick,colorpick:ColorPick,trivia:TriviaGame,pingpong:PingPong,breathe:BreatheGame,emoji_quiz:EmojiQuiz,fastmath:FastMath,wordlen:WordLen,carddash:CardDash,stackit:StackIt,colorlines:ColorLines,numbomb:NumBomb,zipzap:ZipZap,bubbleshoot:BubbleShoot,knifehit:KnifeHit,blastzone:BlastZone};
+    const M={tapwar:TapWar,reaction:Reaction,memory:MemGame,whack:WhackGame,stroop:StroopGame,mathblitz:MathBlitz,simon:SimonGame,wordjum:WordJumble,rps:RPSGame,balloon:BalloonGame,highlow:HighLow,emojimem:EmojiMatch,numguess:NumGuess,colorflash:ColorFlash,truefalse:TrueFalse,tictac:TicTac,typeeasy:TypeEasy,oddout:OddOut,coinflip:CoinFlip,dotcon:DotConnect,cricket:CricketQuiz,soccer:SoccerTap,chess_q:ChessQuiz,snake:SnakeGame,flappy:FlappyGame,g2048:Game2048,nummem:NumMem,tetris:TetrisGame,minesweep:MineGame,breakout:Breakout,typehard:TypeHard,gridmem:GridMem,mathchain:MathChain,wordchain:WordChain,reflex:ReflexGame,pattern:PatternGame,colornum:ColorNum,sudoku:SudokuGame,anagram:Anagram,gravity:GravityGame,calcchain:CalcChain,speedclick:SpeedClick,colorpick:ColorPick,trivia:TriviaGame,pingpong:PingPong,breathe:BreatheGame,emoji_quiz:EmojiQuiz,fastmath:FastMath,wordlen:WordLen,carddash:CardDash,towerstack:TowerStack,cardodge:CarDodge,stackit:StackIt,colorlines:ColorLines,numbomb:NumBomb,zipzap:ZipZap,bubbleshoot:BubbleShoot,knifehit:KnifeHit,blastzone:BlastZone};
     const G=M[ag.id];
     return <div style={{maxWidth:540,margin:"0 auto",animation:"fadeUp .3s"}}>
       <Toast toasts={toasts}/>
@@ -4381,61 +4383,455 @@ function SoccerTap({game,name,onEnd,onBack}){
     </div>}
   </div>);
 }
-function VolleyballTap({game,name,onEnd,onBack}){
-  const [score,setS]=useState(0),[time,setTm]=useState(35),[ph,setPh]=useState("idle"),[ballY,setBY]=useState(200),[ballX,setBX]=useState(150),[rally,setRally]=useState(0),[msg,setMsg]=useState(null);
-  const sR=useRef(0),rlyR=useRef(0),phR=useRef("idle"),ballVY=useRef(-8),ballVX=useRef(2),rafR=useRef(null);
-  const W=300,H=300,NET_Y=H/2;
-  useEffect(()=>{if(ph!=="running")return;if(time<=0){onEnd(sR.current*5,game.id);return;}const t=setTimeout(()=>setTm(x=>x-1),1000);return()=>clearTimeout(t);},[ph,time]);
-  const startGame=()=>{sR.current=0;rlyR.current=0;setS(0);setRally(0);setTm(35);setBY(200);setBX(150);ballVY.current=-8;ballVX.current=2+Math.random()*2;phR.current="running";setPh("running");};
-  const tap=()=>{if(phR.current!=="running")return;if(ballY>NET_Y-20){window.SFX&&window.SFX.volley();rlyR.current++;setRally(rlyR.current);ballVY.current=-Math.abs(ballVY.current)-2;ballVX.current=(Math.random()-.5)*6;if(rlyR.current%3===0){sR.current++;setS(sR.current);setMsg("⭐ Point!");window.SFX&&window.SFX.score();setTimeout(()=>setMsg(null),700);}setTimeout(()=>{if(phR.current!=="running")return;ballVY.current=Math.abs(ballVY.current)*0.8+2;ballVX.current=(Math.random()-.5)*4;},600+Math.random()*400);}else{setMsg("⚠️ Too early!");setTimeout(()=>setMsg(null),500);}};
-  useEffect(()=>{if(ph!=="running")return;let by=200,bx=150,vy=-8,vx=2;const loop=()=>{if(phR.current!=="running")return;by+=vy;bx+=vx;vy+=0.4;if(bx<10||bx>W-10)vx*=-1;if(by<10){vy=Math.abs(vy)*.8;}if(by>H){phR.current="running";by=200;bx=150;vy=-8;vx=(Math.random()-.5)*4;}setBY(by);setBX(bx);ballVY.current=vy;ballVX.current=vx;rafR.current=requestAnimationFrame(loop);};rafR.current=requestAnimationFrame(loop);return()=>{if(rafR.current)cancelAnimationFrame(rafR.current);};},[ph]);
-  return(<div style={{textAlign:"center",padding:".8rem",width:"100%"}}>
-    <TopBar name={name} onBack={onBack} game={game} score={score}/>
-    <PBar pct={(35-time)/35*100} colors={game.c} time={time}/>
-    <div style={{display:"flex",justifyContent:"space-between",maxWidth:300,margin:"0 auto .3rem",padding:"0 .4rem"}}><div style={{color:game.c[0],fontWeight:700}}>🏐 {score} pts</div><div style={{fontFamily:"'Orbitron',sans-serif",color:time<=5?"#ff4444":"#ffd93d"}}>{time}s</div><div style={{color:"#f97316",fontWeight:700}}>Rally: {rally}</div></div>
-    {ph==="running"&&<div onClick={tap} onTouchStart={e=>{e.preventDefault();tap();}} style={{position:"relative",width:W,height:H,margin:"0 auto",background:"linear-gradient(180deg,#1a1a3e 0%,#1a1a3e 50%,#0d2b0d 50%,#0d2b0d 100%)",borderRadius:14,overflow:"hidden",cursor:"pointer",userSelect:"none",touchAction:"none",border:"2px solid rgba(255,255,255,.1)"}}>
-      <div style={{position:"absolute",top:H/2-4,left:0,right:0,height:8,background:"rgba(255,255,255,.2)",borderTop:"2px solid rgba(255,255,255,.5)",borderBottom:"2px solid rgba(255,255,255,.5)"}}/>
-      <div style={{position:"absolute",top:8,left:"50%",transform:"translateX(-50%)",color:"rgba(255,100,100,.4)",fontSize:".65rem"}}>OPPONENT</div>
-      <div style={{position:"absolute",bottom:8,left:"50%",transform:"translateX(-50%)",color:"rgba(100,255,100,.5)",fontSize:".65rem"}}>TAP ZONE</div>
-      <div style={{position:"absolute",left:ballX-14,top:ballY-14,width:28,height:28,fontSize:"1.5rem",filter:"drop-shadow(0 0 6px rgba(255,255,255,.4))"}}>🏐</div>
-      {msg&&<div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.5rem",fontWeight:900,color:msg.includes("Point")?"#6bcb77":"#ffd93d",animation:"bounceIn .2s",pointerEvents:"none"}}>{msg}</div>}
-    </div>}
-    {ph==="running"&&<p style={{color:"#555",fontSize:".72rem",marginTop:".4rem"}}>Ball ko tap karo — opponent side pe bhejo! 3 rallies = 1 point!</p>}
-    {ph==="idle"&&<><p style={{color:"#888",fontSize:".85rem",margin:"1rem 0",lineHeight:1.5}}>Ball ko tap karo jab woh tumhari side pe aaye!<br/>Rally banao — 3 rally = 1 point!</p><button onClick={startGame} style={GB(game.c[0],game.c[1],{maxWidth:215,margin:"0 auto"})}>🏐 Serve!</button></>}
-  </div>);
+
+// ============================================================
+// TOWER STACK GAME
+// ============================================================
+function TowerStack({game,name,onEnd,onBack}){
+  const W=280,H=400,BH=22,BASE_W=160;
+  const cvRef=useRef(null);
+  const rafRef=useRef(null);
+  const live=useRef(false);
+  const gs=useRef(null);
+  const [ph,setPh]=useState('idle');
+  const [sc,setSc]=useState(0);
+  const [combo,setCombo]=useState(0);
+
+  function newState(){
+    return{sc:0,combo:0,level:1,ph:'run',
+      stack:[{x:(W-BASE_W)/2,w:BASE_W,y:H-BH}],
+      mx:0,mw:BASE_W-10,mdir:1,mspd:2.5,
+      camY:0,msg:'',mt:0,fr:0};
+  }
+
+  function doTap(){
+    const g=gs.current;
+    if(!g||g.ph!=='run') return;
+    const top=g.stack[g.stack.length-1];
+    const L=Math.max(g.mx,top.x),R=Math.min(g.mx+g.mw,top.x+top.w),ov=R-L;
+    if(ov<=4){
+      g.ph='over';live.current=false;
+      window.SFX&&window.SFX.lose&&window.SFX.lose();
+      setPh('over');setSc(g.sc);
+      setTimeout(()=>onEnd(g.sc,game.id),900);
+      return;
+    }
+    const perfect=ov>=g.mw*0.88;
+    const nw=perfect?top.w:ov,nx=perfect?top.x+(top.w-nw)/2:L,ny=top.y-BH;
+    g.stack.push({x:nx,w:nw,y:ny});
+    if(ny<100) g.camY+=BH;
+    if(perfect){g.combo++;g.sc+=10+g.combo*5;g.msg='✨ PERFECT!';g.mt=50;window.SFX&&window.SFX.achieve&&window.SFX.achieve();}
+    else{g.combo=0;g.sc+=Math.round(ov/top.w*8)+2;g.msg='👍 Good!';g.mt=30;window.SFX&&window.SFX.tap&&window.SFX.tap();}
+    g.level++;g.mspd=Math.min(2.5+g.level*0.22,9);
+    g.mx=0;g.mw=Math.max(nw*0.9,28);g.mdir=1;
+    setSc(g.sc);setCombo(g.combo);
+    if(g.level>20){g.ph='win';live.current=false;setPh('win');setTimeout(()=>onEnd(g.sc,game.id),800);}
+  }
+
+  function loop(){
+    if(!live.current) return;
+    const g=gs.current;if(!g) return;
+    const cv=cvRef.current;if(!cv){rafRef.current=requestAnimationFrame(loop);return;}
+    const ctx=cv.getContext('2d');
+    g.fr++;
+    if(g.ph==='run'){
+      g.mx+=g.mdir*g.mspd;
+      if(g.mx+g.mw>=W){g.mx=W-g.mw;g.mdir=-1;}
+      if(g.mx<=0){g.mx=0;g.mdir=1;}
+    }
+    if(g.mt>0)g.mt--;else g.msg='';
+    drawTS(ctx,g,W,H,BH);
+    rafRef.current=requestAnimationFrame(loop);
+  }
+
+  function launch(){
+    gs.current=newState();
+    live.current=true;
+    setPh('run');setSc(0);setCombo(0);
+    if(rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current=requestAnimationFrame(loop);
+  }
+
+  // Attach touch/click via DOM ref to guarantee it fires on mobile
+  useEffect(()=>{
+    const cv=cvRef.current;
+    if(!cv) return;
+    const handler=e=>{e.preventDefault();doTap();};
+    cv.addEventListener('touchstart',handler,{passive:false});
+    cv.addEventListener('mousedown',handler);
+    return()=>{cv.removeEventListener('touchstart',handler);cv.removeEventListener('mousedown',handler);};
+  },[ph]);
+
+  useEffect(()=>()=>{live.current=false;if(rafRef.current)cancelAnimationFrame(rafRef.current);},[]);
+
+  return(
+    <div style={{textAlign:'center',padding:'.5rem',width:'100%',maxWidth:320,margin:'0 auto'}}>
+      <TopBar name={name} onBack={()=>{live.current=false;if(rafRef.current)cancelAnimationFrame(rafRef.current);onBack();}} game={game}/>
+      {ph==='run'&&<>
+        <div style={{display:'flex',justifyContent:'space-between',maxWidth:W,margin:'0 auto .2rem',padding:'0 .3rem',fontFamily:'monospace',fontSize:'.8rem',fontWeight:700}}>
+          <span style={{color:'#fbbf24'}}>⭐ {sc}</span>
+          {combo>1&&<span style={{color:'#f97316'}}>🔥 x{combo}</span>}
+        </div>
+        <canvas ref={cvRef} width={W} height={H}
+          style={{display:'block',margin:'0 auto',borderRadius:12,border:'2px solid rgba(255,255,255,.1)',cursor:'pointer',touchAction:'none',WebkitUserSelect:'none',userSelect:'none'}}/>
+        <p style={{color:'#555',fontSize:'.7rem',marginTop:4}}>Canvas pe TAP karo block stack karne ke liye!</p>
+      </>}
+      {ph==='idle'&&<div style={{padding:'1rem 0'}}>
+        <div style={{fontSize:'3rem',marginBottom:'.5rem'}}>🏗️</div>
+        <div style={{color:'#666',fontSize:'.84rem',marginBottom:'1rem',lineHeight:1.8}}>
+          Moving block ko sahi time pe tap karo!<br/>
+          <span style={{color:'#fbbf24',fontWeight:700}}>Perfect = Combo Bonus ✨</span>
+        </div>
+        <button onClick={launch} style={GB(game.c[0],game.c[1],{maxWidth:215,margin:'0 auto'})}>🏗️ Build!</button>
+      </div>}
+      {(ph==='over'||ph==='win')&&<div style={{padding:'1rem 0'}}>
+        <div style={{fontSize:'2.5rem',margin:'.5rem 0'}}>{ph==='win'?'🏆':'💥'}</div>
+        <div style={{color:'#fff',fontSize:'1rem',fontWeight:700,marginBottom:'.7rem'}}>Score: {sc}</div>
+        <button onClick={launch} style={GB(game.c[0],game.c[1],{maxWidth:215,margin:'0 auto'})}>🔄 Again!</button>
+      </div>}
+    </div>
+  );
 }
 
+function drawTS(ctx,g,W,H,BH){
+  ctx.fillStyle='#0f172a';ctx.fillRect(0,0,W,H);
+  const sk=ctx.createLinearGradient(0,0,0,H);
+  sk.addColorStop(0,'#1e1b4b');sk.addColorStop(1,'#0f172a');
+  ctx.fillStyle=sk;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='rgba(255,255,255,.3)';
+  for(let i=0;i<20;i++) ctx.fillRect((i*139)%W,(i*83)%100,1.5,1.5);
+  const cam=g.camY;
+  g.stack.forEach((b,i)=>{
+    const y=b.y+cam;if(y>H+5||y<-BH) return;
+    const t=i/Math.max(g.stack.length,1);
+    const r=Math.round(59+t*180),gr=Math.round(130+t*80),bl=Math.round(246-t*100);
+    ctx.fillStyle=`rgb(${r},${gr},${bl})`;ctx.fillRect(b.x,y,b.w,BH);
+    ctx.fillStyle='rgba(255,255,255,.2)';ctx.fillRect(b.x,y,b.w,4);
+    ctx.fillStyle='rgba(0,0,0,.2)';ctx.fillRect(b.x,y+BH-3,b.w,3);
+    ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1;ctx.strokeRect(b.x,y,b.w,BH);
+  });
+  // Crane
+  ctx.strokeStyle='#9ca3af';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,10);ctx.lineTo(W,10);ctx.stroke();
+  ctx.strokeStyle='#6b7280';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(W/2,0);ctx.lineTo(W/2,10);ctx.stroke();
+  const mid=g.mx+g.mw/2;
+  ctx.strokeStyle='#6b7280';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(mid,10);ctx.lineTo(mid,42);ctx.stroke();
+  ctx.setLineDash([]);
+  // Moving block
+  if(g.ph==='run'||g.ph==='win'){
+    const mg=ctx.createLinearGradient(g.mx,0,g.mx+g.mw,0);
+    mg.addColorStop(0,'#f59e0b');mg.addColorStop(1,'#fbbf24');
+    ctx.fillStyle=mg;ctx.fillRect(g.mx,42,g.mw,BH);
+    ctx.fillStyle='rgba(255,255,255,.25)';ctx.fillRect(g.mx,42,g.mw,5);
+    ctx.strokeStyle='#fcd34d';ctx.lineWidth=1.5;ctx.strokeRect(g.mx,42,g.mw,BH);
+  }
+  ctx.font='bold 13px monospace';ctx.fillStyle='#fbbf24';ctx.textAlign='left';ctx.fillText('Lv '+g.level,8,H-8);
+  ctx.textAlign='right';ctx.fillStyle='#fff';ctx.fillText('⭐ '+g.sc,W-8,H-8);
+  if(g.combo>1){ctx.textAlign='center';ctx.fillStyle='#f97316';ctx.fillText('🔥 x'+g.combo,W/2,H-8);}
+  if(g.msg&&g.mt>0){
+    const a=Math.min(1,g.mt/14);
+    ctx.save();ctx.globalAlpha=a;ctx.font='bold 17px monospace';ctx.textAlign='center';
+    const col=g.msg.includes('PERFECT')?'#fbbf24':'#6bcb77';
+    ctx.fillStyle=col;ctx.shadowBlur=8;ctx.shadowColor=col;
+    ctx.fillText(g.msg,W/2,H/2+20);ctx.restore();
+  }
+  if(g.ph==='over'||g.ph==='win'){
+    ctx.fillStyle='rgba(0,0,0,.78)';ctx.fillRect(0,0,W,H);
+    ctx.textAlign='center';ctx.font='bold 22px monospace';
+    ctx.fillStyle=g.ph==='win'?'#fbbf24':'#ef4444';
+    ctx.fillText(g.ph==='win'?'🏆 BUILT!':'💥 MISSED!',W/2,H/2-15);
+    ctx.font='14px monospace';ctx.fillStyle='#fff';ctx.fillText('Score: '+g.sc,W/2,H/2+12);
+  }
+}
 
+function CarDodge({game,name,onEnd,onBack}){
+  const W=300,H=420;
+  const LANES=[52,110,168,226];
+  const CW=38,CH=58,PW=36,PH=54;
+  const cvRef=useRef(null);
+  const rafRef=useRef(null);
+  const btnLRef=useRef(null);
+  const btnRRef=useRef(null);
+  const live=useRef(false);
+  const gs=useRef(null);
+  const [ph,setPh]=useState('idle');
+  const [sc,setSc]=useState(0);
+  const [coins,setCoins]=useState(0);
+  const [time,setTime]=useState(60);
 
+  function newState(){
+    return{ph:'run',sc:0,coins:0,lane:1,px:LANES[1],
+      cars:[],coinArr:[],spd:3.2,spawnT:0,spawnInt:58,
+      coinT:0,time:60,timeFr:0,fr:0,roadY:0,msg:'',mt:0};
+  }
 
+  function goLeft(){
+    const g=gs.current;if(!g||g.ph!=='run') return;
+    if(g.lane>0){g.lane--;window.SFX&&window.SFX.click&&window.SFX.click();}
+  }
+  function goRight(){
+    const g=gs.current;if(!g||g.ph!=='run') return;
+    if(g.lane<3){g.lane++;window.SFX&&window.SFX.click&&window.SFX.click();}
+  }
 
+  function loop(){
+    if(!live.current) return;
+    const g=gs.current;if(!g) return;
+    const cv=cvRef.current;if(!cv){rafRef.current=requestAnimationFrame(loop);return;}
+    const ctx=cv.getContext('2d');
+    g.fr++;
+    if(g.ph!=='run'){drawCD(ctx,g,W,H,LANES,CW,CH,PW,PH);return;}
 
+    // Timer
+    g.timeFr++;
+    if(g.timeFr>=60){g.timeFr=0;g.time--;setTime(g.time);
+      if(g.time<=0){
+        g.ph='done';live.current=false;
+        drawCD(ctx,g,W,H,LANES,CW,CH,PW,PH);
+        setPh('done');setSc(g.sc);setCoins(g.coins);
+        setTimeout(()=>onEnd(g.sc,game.id),1100);return;
+      }
+    }
 
+    // Smooth player x
+    const tx=LANES[g.lane];
+    g.px+=(tx-g.px)*0.22;
 
+    g.roadY=(g.roadY+g.spd)%80;
+    g.spd=3.2+((60-g.time)/60)*4.2;
+    g.spawnInt=Math.max(26,58-((60-g.time)/60)*24);
 
+    // Spawn traffic — guarantee at least 2 lanes open
+    g.spawnT++;
+    if(g.spawnT>=g.spawnInt){
+      g.spawnT=0;
+      const open=[0,1,2,3];
+      // Shuffle
+      for(let i=open.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[open[i],open[j]]=[open[j],open[i]];}
+      const blockCount=Math.random()<0.3?2:1;
+      const cols=['#ef4444','#3b82f6','#8b5cf6','#f59e0b','#ec4899','#0ea5e9'];
+      for(let i=0;i<blockCount;i++){
+        g.cars.push({l:open[i],y:-CH-Math.random()*30,color:cols[Math.floor(Math.random()*cols.length)]});
+      }
+    }
 
+    // Spawn coins
+    g.coinT++;
+    if(g.coinT>=75){g.coinT=0;g.coinArr.push({l:Math.floor(Math.random()*4),y:-20});}
 
+    g.cars.forEach(c=>c.y+=g.spd*1.08);
+    g.cars=g.cars.filter(c=>c.y<H+CH);
+    g.coinArr.forEach(c=>c.y+=g.spd);
+    g.coinArr=g.coinArr.filter(c=>c.y<H+20);
 
+    const py=H-PH-12;
 
+    // Collision
+    for(const c of g.cars){
+      const cx=LANES[c.l];
+      if(Math.abs(cx-g.px)<(CW/2+PW/2-8)&&c.y+CH>py+8&&c.y<py+PH-8){
+        g.ph='crash';live.current=false;
+        window.SFX&&window.SFX.lose&&window.SFX.lose();
+        drawCD(ctx,g,W,H,LANES,CW,CH,PW,PH);
+        setPh('crash');setSc(g.sc);setCoins(g.coins);
+        setTimeout(()=>onEnd(g.sc,game.id),1100);return;
+      }
+    }
 
+    // Coins
+    g.coinArr=g.coinArr.filter(c=>{
+      if(Math.abs(LANES[c.l]-g.px)<28&&c.y+10>py&&c.y<py+PH){
+        g.coins++;g.sc+=15;g.msg='💰 +15!';g.mt=22;
+        window.SFX&&window.SFX.coin&&window.SFX.coin();
+        setCoins(g.coins);return false;
+      }
+      return true;
+    });
+
+    if(g.fr%20===0){g.sc++;setSc(g.sc);}
+    if(g.mt>0)g.mt--;else g.msg='';
+
+    drawCD(ctx,g,W,H,LANES,CW,CH,PW,PH);
+    rafRef.current=requestAnimationFrame(loop);
+  }
+
+  function launch(){
+    gs.current=newState();
+    live.current=true;
+    setPh('run');setSc(0);setCoins(0);setTime(60);
+    if(rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current=requestAnimationFrame(loop);
+  }
+
+  // Attach DOM events directly — most reliable for mobile touch
+  useEffect(()=>{
+    const bl=btnLRef.current,br=btnRRef.current;
+    if(!bl||!br) return;
+    const lh=e=>{e.preventDefault();e.stopPropagation();goLeft();};
+    const rh=e=>{e.preventDefault();e.stopPropagation();goRight();};
+    bl.addEventListener('touchstart',lh,{passive:false});
+    bl.addEventListener('mousedown',lh);
+    br.addEventListener('touchstart',rh,{passive:false});
+    br.addEventListener('mousedown',rh);
+    return()=>{
+      bl.removeEventListener('touchstart',lh);bl.removeEventListener('mousedown',lh);
+      br.removeEventListener('touchstart',rh);br.removeEventListener('mousedown',rh);
+    };
+  },[ph]);
+
+  useEffect(()=>()=>{live.current=false;if(rafRef.current)cancelAnimationFrame(rafRef.current);},[]);
+
+  const btnStyle={
+    flex:1,height:64,
+    background:'rgba(34,197,94,.1)',
+    border:'2.5px solid rgba(34,197,94,.4)',
+    borderRadius:14,
+    display:'flex',alignItems:'center',justifyContent:'center',
+    fontSize:'2.2rem',
+    cursor:'pointer',
+    touchAction:'none',
+    userSelect:'none',
+    WebkitUserSelect:'none',
+    WebkitTapHighlightColor:'transparent',
+  };
+
+  return(
+    <div style={{textAlign:'center',padding:'.5rem',width:'100%',maxWidth:340,margin:'0 auto'}}>
+      <TopBar name={name} onBack={()=>{live.current=false;if(rafRef.current)cancelAnimationFrame(rafRef.current);onBack();}} game={game}/>
+      {ph==='run'&&<>
+        <div style={{display:'flex',justifyContent:'space-between',maxWidth:W,margin:'0 auto .2rem',padding:'0 .3rem',fontFamily:'monospace',fontSize:'.78rem',fontWeight:700}}>
+          <span style={{color:'#fbbf24'}}>⭐ {sc}</span>
+          <span style={{color:time<=8?'#ef4444':'#fff'}}>⏱ {time}s</span>
+          <span style={{color:'#f59e0b'}}>💰 {coins}</span>
+        </div>
+        <canvas ref={cvRef} width={W} height={H}
+          style={{display:'block',margin:'0 auto',borderRadius:12,border:'2px solid rgba(255,255,255,.08)',touchAction:'none'}}/>
+        <div style={{display:'flex',gap:12,marginTop:10,padding:'0 4px'}}>
+          <div ref={btnLRef} style={btnStyle}>⬅️</div>
+          <div ref={btnRRef} style={btnStyle}>➡️</div>
+        </div>
+      </>}
+      {ph==='idle'&&<div style={{padding:'1rem 0'}}>
+        <div style={{fontSize:'3rem',marginBottom:'.5rem'}}>🚗</div>
+        <div style={{color:'#666',fontSize:'.84rem',marginBottom:'1rem',lineHeight:1.8}}>
+          Traffic se bacho — coins uthao!<br/>
+          <span style={{color:'#fbbf24',fontWeight:700}}>Left/Right se lane badlo 🏁</span>
+        </div>
+        <button onClick={launch} style={GB(game.c[0],game.c[1],{maxWidth:215,margin:'0 auto'})}>🚗 Drive!</button>
+      </div>}
+      {(ph==='crash'||ph==='done')&&<div style={{padding:'1rem 0'}}>
+        <div style={{fontSize:'2.5rem',margin:'.5rem 0'}}>{ph==='crash'?'💥':'🏁'}</div>
+        <div style={{color:'#fff',fontSize:'1rem',fontWeight:700}}>Score: {sc}</div>
+        <div style={{color:'#f59e0b',fontSize:'.85rem',margin:'.3rem 0 .8rem'}}>Coins: {coins}</div>
+        <button onClick={launch} style={GB(game.c[0],game.c[1],{maxWidth:215,margin:'0 auto'})}>🔄 Again!</button>
+      </div>}
+    </div>
+  );
+}
+
+function drawCD(ctx,g,W,H,LANES,CW,CH,PW,PH){
+  ctx.fillStyle='#374151';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#166534';ctx.fillRect(0,0,30,H);ctx.fillRect(W-30,0,30,H);
+  ctx.fillStyle='#15803d';
+  for(let y=0;y<H+50;y+=50){
+    const yy=(y+g.roadY)%H;
+    ctx.fillRect(3,yy,24,22);ctx.fillRect(W-27,yy,24,22);
+  }
+  ctx.strokeStyle='rgba(255,255,255,.3)';ctx.lineWidth=2.5;ctx.setLineDash([24,18]);
+  [81,137,193].forEach(x=>{ctx.beginPath();ctx.moveTo(x,-10);ctx.lineTo(x,H+10);ctx.stroke();});
+  ctx.setLineDash([]);
+  ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(30,0);ctx.lineTo(30,H);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(W-30,0);ctx.lineTo(W-30,H);ctx.stroke();
+
+  // Coins
+  g.coinArr.forEach(c=>{
+    const cx=LANES[c.l],cy=c.y+10;
+    ctx.save();ctx.shadowBlur=8;ctx.shadowColor='#fbbf24';
+    ctx.fillStyle='#fbbf24';ctx.beginPath();ctx.arc(cx,cy,9,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#f59e0b';ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.6)';ctx.beginPath();ctx.arc(cx-2,cy-2,2.5,0,Math.PI*2);ctx.fill();
+    ctx.restore();
+  });
+
+  // Traffic cars
+  g.cars.forEach(c=>_drawCar(ctx,LANES[c.l]-CW/2,c.y,CW,CH,c.color,false));
+
+  // Player car
+  _drawCar(ctx,g.px-PW/2,H-PH-12,PW,PH,'#22c55e',true);
+
+  // HUD
+  ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(0,0,W,30);
+  ctx.font='bold 12px monospace';
+  ctx.textAlign='left';ctx.fillStyle='#fbbf24';ctx.fillText('⭐ '+g.sc,8,20);
+  ctx.textAlign='center';ctx.fillStyle='#fff';ctx.fillText('⏱ '+g.time+'s',W/2,20);
+  ctx.textAlign='right';ctx.fillStyle='#f59e0b';ctx.fillText('💰 '+g.coins,W-8,20);
+
+  if(g.msg&&g.mt>0){
+    const a=Math.min(1,g.mt/12);
+    ctx.save();ctx.globalAlpha=a;ctx.font='bold 16px monospace';ctx.textAlign='center';
+    ctx.fillStyle='#fbbf24';ctx.shadowBlur=6;ctx.shadowColor='#fbbf24';
+    ctx.fillText(g.msg,W/2,H-115);ctx.restore();
+  }
+  if(g.ph==='crash'||g.ph==='done'){
+    ctx.fillStyle='rgba(0,0,0,.8)';ctx.fillRect(0,0,W,H);
+    ctx.textAlign='center';ctx.font='bold 22px monospace';
+    ctx.fillStyle=g.ph==='crash'?'#ef4444':'#fbbf24';
+    ctx.fillText(g.ph==='crash'?'💥 CRASH!':'🏁 FINISH!',W/2,H/2-18);
+    ctx.font='14px monospace';ctx.fillStyle='#fff';ctx.fillText('Score: '+g.sc,W/2,H/2+8);
+    ctx.font='12px monospace';ctx.fillStyle='#f59e0b';ctx.fillText('Coins: '+g.coins,W/2,H/2+28);
+  }
+}
+
+function _drawCar(ctx,x,y,w,h,color,isPlayer){
+  ctx.save();
+  function dk(hex,a){const n=parseInt(hex.replace('#',''),16);const r=Math.max(0,(n>>16)-a),g=Math.max(0,((n>>8)&0xff)-a),b=Math.max(0,(n&0xff)-a);return'#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');}
+  ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y+h*0.12,w,h*0.76,4);ctx.fill();
+  ctx.fillStyle=dk(color,35);ctx.beginPath();ctx.roundRect(x+w*0.1,y+h*0.04,w*0.8,h*0.48,4);ctx.fill();
+  ctx.fillStyle='rgba(180,230,255,.7)';ctx.beginPath();ctx.roundRect(x+w*0.13,y+h*0.06,w*0.74,h*0.22,3);ctx.fill();
+  ctx.fillStyle='rgba(150,200,255,.5)';ctx.beginPath();ctx.roundRect(x+w*0.13,y+h*0.3,w*0.74,h*0.18,2);ctx.fill();
+  ctx.fillStyle='#111';
+  [[x-3,y+h*0.14],[x+w-5,y+h*0.14],[x-3,y+h*0.64],[x+w-5,y+h*0.64]].forEach(([wx,wy])=>{ctx.beginPath();ctx.roundRect(wx,wy,8,14,3);ctx.fill();});
+  if(isPlayer){ctx.fillStyle='#fbbf24';ctx.shadowBlur=7;ctx.shadowColor='#fbbf24';ctx.fillRect(x+3,y+h*0.84,9,5);ctx.fillRect(x+w-12,y+h*0.84,9,5);}
+  else{ctx.fillStyle='#ef4444';ctx.shadowBlur=4;ctx.shadowColor='#ef4444';ctx.fillRect(x+3,y+3,9,5);ctx.fillRect(x+w-12,y+3,9,5);}
+  ctx.shadowBlur=0;
+  if(isPlayer){ctx.strokeStyle='rgba(34,197,94,.45)';ctx.lineWidth=2;ctx.shadowBlur=8;ctx.shadowColor='#22c55e';ctx.beginPath();ctx.roundRect(x-1,y+h*0.11,w+2,h*0.78,5);ctx.stroke();ctx.shadowBlur=0;}
+  ctx.restore();
+}
 
 
 function BlastZone({game,name,onEnd,onBack}){
   const COLS=13,ROWS=11,TL=26;
   const GW=COLS*TL,GH=ROWS*TL;
   const WALL=1,SOFT=2,FUSE=150,BLAST_DUR=40;
-  const LVS=[{en:3,den:.32,spd:70,range:2},{en:5,den:.38,spd:55,range:3},{en:7,den:.44,spd:40,range:3}];
+
+  // 5 levels
+  const LVS=[
+    {en:2,den:.28,spd:80,range:2,label:'Level 1'},
+    {en:3,den:.33,spd:68,range:2,label:'Level 2'},
+    {en:5,den:.38,spd:55,range:2,label:'Level 3'},
+    {en:7,den:.43,spd:44,range:3,label:'Level 4'},
+    {en:9,den:.48,spd:34,range:3,label:'Level 5'},
+  ];
   const D4=[[-1,0],[1,0],[0,-1],[0,1]];
+
+  // Power-up types
+  const PU_RANGE=1; // 💥 Blast range +1
+  const PU_BOMB=2;  // 💣 Extra bomb slot
+  const PU_SPEED=3; // 🚀 Player speed boost (move cooldown kam)
+  const PU_ICONS={1:'💥',2:'💣',3:'🚀'};
+  const PU_COLORS={1:'#f97316',2:'#ef4444',3:'#22c55e'};
 
   const cvRef=useRef(null);
   const rafRef=useRef(null);
-  const gs=useRef(null); // game state
+  const gs=useRef(null);
   const running=useRef(false);
+  const moveCooldown=useRef(0); // speed boost ke liye
   const [screen,setScreen]=useState('idle');
   const [hud,setHud]=useState({score:0,lives:3,lv:1,time:120});
 
   function buildGrid(lv){
-    const L=LVS[Math.min(lv-1,2)];
+    const L=LVS[Math.min(lv-1,LVS.length-1)];
     const g=[];
     for(let r=0;r<ROWS;r++){
       g[r]=[];
@@ -4445,7 +4841,6 @@ function BlastZone({game,name,onEnd,onBack}){
         else{g[r][c]=0;}
       }
     }
-    // Safe zone around player start
     const safe=['1,1','1,2','1,3','2,1','3,1','2,2','3,2','2,3','3,3'];
     for(let r=1;r<ROWS-1;r++)
       for(let c=1;c<COLS-1;c++)
@@ -4463,17 +4858,36 @@ function BlastZone({game,name,onEnd,onBack}){
     return spots.slice(0,count).map(([r,c],id)=>({r,c,id,dir:Math.floor(Math.random()*4),t:0,alive:true}));
   }
 
+  // Power-ups spawn karo kuch SOFT cells ke neeche
+  function spawnPowerups(grid){
+    const spots=[];
+    for(let r=1;r<ROWS-1;r++)
+      for(let c=1;c<COLS-1;c++)
+        if(grid[r][c]===SOFT) spots.push([r,c]);
+    spots.sort(()=>Math.random()-.5);
+    const count=Math.min(4, Math.floor(spots.length*0.12)+2);
+    const pus=[];
+    for(let i=0;i<count&&i<spots.length;i++){
+      const [r,c]=spots[i];
+      const type=([PU_RANGE,PU_BOMB,PU_SPEED])[Math.floor(Math.random()*3)];
+      pus.push({r,c,type,visible:false,collected:false});
+    }
+    return pus;
+  }
+
   function newState(lv,score,lives){
-    const L=LVS[Math.min(lv-1,2)];
+    const L=LVS[Math.min(lv-1,LVS.length-1)];
     const grid=buildGrid(lv);
     return{
       grid,lv,
       pr:1,pc:1,
       bombs:[],blasts:[],pts:[],
+      powerups:spawnPowerups(grid),
       enemies:spawnEnemies(grid,L.en),
-      eSpd:L.spd,bRange:L.range,
+      eSpd:L.spd,bRange:L.range,maxBombs:1,
+      playerSpd:1, // 1=normal, 2=fast
       score:score||0,lives:lives||3,
-      time:120,timeFr:0,frame:0,
+      time:130,timeFr:0,frame:0,
       phase:'play',endT:0
     };
   }
@@ -4481,32 +4895,51 @@ function BlastZone({game,name,onEnd,onBack}){
   function canMove(s,nr,nc){
     if(nr<0||nr>=ROWS||nc<0||nc>=COLS) return false;
     if(s.grid[nr][nc]!==0) return false;
-    // Block destination if bomb there AND player not already there
     return !s.bombs.some(b=>b.r===nr&&b.c===nc&&!(s.pr===nr&&s.pc===nc));
   }
 
   function doMove(dir){
     const s=gs.current;
     if(!s||!running.current||s.phase!=='play') return;
+    // Speed boost cooldown check
+    if(moveCooldown.current>0) return;
     const dirs={up:[-1,0],down:[1,0],left:[0,-1],right:[0,1]};
     const [dr,dc]=dirs[dir];
     const nr=s.pr+dr, nc=s.pc+dc;
     if(canMove(s,nr,nc)){
       s.pr=nr; s.pc=nc;
-      // Check if player hit enemy or blast
+      // Speed cooldown set karo (fast player = kam cooldown)
+      moveCooldown.current=s.playerSpd===2?1:0;
+      // Power-up collect check
+      const pu=s.powerups.find(p=>!p.collected&&p.visible&&p.r===s.pr&&p.c===s.pc);
+      if(pu){
+        pu.collected=true;
+        applyPowerup(s,pu.type);
+        window.SFX&&window.SFX.achieve&&window.SFX.achieve();
+        s.pts.push({x:s.pc*TL+TL/2,y:s.pr*TL-4,vy:-2,life:28,txt:PU_ICONS[pu.type]+' GET!',col:PU_COLORS[pu.type]});
+      }
+      // Hit check
       if(s.blasts.some(b=>b.r===s.pr&&b.c===s.pc)||
          s.enemies.some(e=>e.alive&&e.r===s.pr&&e.c===s.pc)){
-        s.phase='lose'; s.endT=0;
+        s.phase='lose';s.endT=0;
+        window.SFX&&window.SFX.lose&&window.SFX.lose();
       }
     }
+  }
+
+  function applyPowerup(s,type){
+    if(type===PU_RANGE){s.bRange=Math.min(s.bRange+1,5);}
+    else if(type===PU_BOMB){s.maxBombs=Math.min(s.maxBombs+1,3);}
+    else if(type===PU_SPEED){s.playerSpd=2;}
   }
 
   function doBomb(){
     const s=gs.current;
     if(!s||!running.current||s.phase!=='play') return;
-    if(s.bombs.filter(b=>b.fuse>0).length>=1) return;
+    if(s.bombs.filter(b=>b.fuse>0).length>=s.maxBombs) return;
     if(s.bombs.some(b=>b.r===s.pr&&b.c===s.pc&&b.fuse>0)) return;
     s.bombs.push({r:s.pr,c:s.pc,fuse:FUSE,range:s.bRange});
+    window.SFX&&window.SFX.bounce&&window.SFX.bounce();
   }
 
   function explode(s,bomb){
@@ -4516,28 +4949,44 @@ function BlastZone({game,name,onEnd,onBack}){
         const nr=bomb.r+dr*i, nc=bomb.c+dc*i;
         if(nr<0||nr>=ROWS||nc<0||nc>=COLS||s.grid[nr][nc]===WALL) break;
         cells.push({r:nr,c:nc});
-        if(s.grid[nr][nc]===SOFT){s.grid[nr][nc]=0; break;}
+        if(s.grid[nr][nc]===SOFT){
+          // Power-up reveal karo agar is cell mein hai
+          const pu=s.powerups.find(p=>!p.collected&&!p.visible&&p.r===nr&&p.c===nc);
+          if(pu) pu.visible=true;
+          s.grid[nr][nc]=0;
+          break;
+        }
       }
     }
     cells.forEach(({r,c})=>s.blasts.push({r,c,t:BLAST_DUR}));
+    window.SFX&&window.SFX.pop&&window.SFX.pop();
   }
 
   function tick(){
     const s=gs.current;
     if(!s) return;
     s.frame++;
+    if(moveCooldown.current>0) moveCooldown.current--;
 
     if(s.phase==='win'||s.phase==='lose'){
       s.endT++;
       if(s.endT>90){
         if(s.phase==='win'){
           const nl=s.lv+1;
-          if(nl>3){running.current=false;setTimeout(()=>onEnd(s.score,game.id),200);}
-          else{gs.current=newState(nl,s.score,s.lives);setHud({score:s.score,lives:s.lives,lv:nl,time:120});}
+          if(nl>LVS.length){running.current=false;setTimeout(()=>onEnd(s.score,game.id),200);}
+          else{
+            gs.current=newState(nl,s.score,s.lives);
+            moveCooldown.current=0;
+            setHud({score:s.score,lives:s.lives,lv:nl,time:130});
+          }
         } else {
           const nl=s.lives-1;
           if(nl<=0){running.current=false;setTimeout(()=>onEnd(s.score,game.id),200);}
-          else{gs.current=newState(s.lv,s.score,nl);setHud({score:s.score,lives:nl,lv:s.lv,time:120});}
+          else{
+            gs.current=newState(s.lv,s.score,nl);
+            moveCooldown.current=0;
+            setHud({score:s.score,lives:nl,lv:s.lv,time:130});
+          }
         }
       }
       draw(); return;
@@ -4545,9 +4994,11 @@ function BlastZone({game,name,onEnd,onBack}){
 
     // Timer
     s.timeFr++;
-    if(s.timeFr>=60){s.timeFr=0;s.time--;if(s.time<=0){s.phase='lose';s.endT=0;draw();return;}}
+    if(s.timeFr>=60){s.timeFr=0;s.time--;
+      if(s.time<=0){s.phase='lose';s.endT=0;window.SFX&&window.SFX.lose&&window.SFX.lose();draw();return;}
+    }
 
-    // Bombs
+    // Bombs tick
     s.bombs.forEach(b=>{if(b.fuse>0){b.fuse--;if(b.fuse===0)explode(s,b);}});
     s.bombs=s.bombs.filter(b=>b.fuse>0);
 
@@ -4557,15 +5008,18 @@ function BlastZone({game,name,onEnd,onBack}){
     // Player hit check
     if(s.blasts.some(b=>b.r===s.pr&&b.c===s.pc)||
        s.enemies.some(e=>e.alive&&e.r===s.pr&&e.c===s.pc)){
-      s.phase='lose'; s.endT=0; draw(); return;
+      s.phase='lose';s.endT=0;
+      window.SFX&&window.SFX.lose&&window.SFX.lose();
+      draw(); return;
     }
 
-    // Enemies move
+    // Enemies
     for(const e of s.enemies){
       if(!e.alive) continue;
       if(s.blasts.some(b=>b.r===e.r&&b.c===e.c)){
         e.alive=false; s.score+=300;
         s.pts.push({x:e.c*TL+TL/2,y:e.r*TL+TL/2,vy:-2.5,life:24,txt:'+300',col:'#fbbf24'});
+        window.SFX&&window.SFX.coin&&window.SFX.coin();
         continue;
       }
       e.t++;
@@ -4579,11 +5033,15 @@ function BlastZone({game,name,onEnd,onBack}){
         const opts=D4.map(([dr2,dc2],i)=>({i,r:e.r+dr2,c:e.c+dc2})).filter(x=>ok(x.r,x.c));
         if(opts.length){const p=opts[Math.floor(Math.random()*opts.length)];e.dir=p.i;e.r=p.r;e.c=p.c;}
       }
-      if(e.r===s.pr&&e.c===s.pc){s.phase='lose';s.endT=0;}
+      if(e.r===s.pr&&e.c===s.pc){
+        s.phase='lose';s.endT=0;
+        window.SFX&&window.SFX.lose&&window.SFX.lose();
+      }
     }
 
     if(s.enemies.every(e=>!e.alive)){
       s.phase='win';s.endT=0;s.score+=500*s.lv;
+      window.SFX&&window.SFX.win&&window.SFX.win();
     }
 
     s.pts=s.pts.map(p=>({...p,y:p.y+p.vy,vy:p.vy+.15,life:p.life-1})).filter(p=>p.life>0);
@@ -4617,6 +5075,20 @@ function BlastZone({game,name,onEnd,onBack}){
       }
     }
 
+    // Power-ups (visible ones)
+    for(const pu of s.powerups){
+      if(!pu.visible||pu.collected) continue;
+      const x=pu.c*TL,y=pu.r*TL;
+      // Glowing background
+      ctx.fillStyle=PU_COLORS[pu.type]+'44';ctx.fillRect(x+1,y+1,TL-2,TL-2);
+      ctx.strokeStyle=PU_COLORS[pu.type];ctx.lineWidth=1.5;ctx.strokeRect(x+2,y+2,TL-4,TL-4);
+      // Bounce animation
+      const bob=Math.sin(s.frame*.15)*2;
+      ctx.font=`${TL*.7}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(PU_ICONS[pu.type],x+TL/2,y+TL/2+bob);
+      ctx.textBaseline='alphabetic';
+    }
+
     // Blasts
     for(const b of s.blasts){
       const x=b.c*TL,y=b.r*TL,a=b.t/BLAST_DUR;
@@ -4632,9 +5104,8 @@ function BlastZone({game,name,onEnd,onBack}){
       ctx.fillStyle='#374151';ctx.beginPath();ctx.arc(x-1,y-1,TL*.28,0,Math.PI*2);ctx.fill();
       ctx.strokeStyle='#fbbf24';ctx.lineWidth=1.5;ctx.shadowColor='#fbbf24';ctx.shadowBlur=6;
       ctx.beginPath();ctx.moveTo(x,y-TL*.3);ctx.quadraticCurveTo(x+TL*.2,y-TL*.5,x+TL*.15,y-TL*.6);ctx.stroke();
-      if(Math.floor(s.frame/4)%2===0){ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x+TL*.15,y-TL*.6,2,0,Math.PI*2);ctx.fill();}
+      if(Math.floor(s.frame/4)%2===0){ctx.fillStyle='#fff';ctx.shadowBlur=0;ctx.beginPath();ctx.arc(x+TL*.15,y-TL*.6,2,0,Math.PI*2);ctx.fill();}
       ctx.restore();
-      // Timer bar
       ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(b.c*TL,b.r*TL+TL-4,TL,4);
       ctx.fillStyle=prog>.4?'#fbbf24':'#ef4444';ctx.fillRect(b.c*TL,b.r*TL+TL-4,TL*prog,4);
     }
@@ -4658,9 +5129,13 @@ function BlastZone({game,name,onEnd,onBack}){
     // Player NOVA
     {
       const x=s.pc*TL+TL/2,y=s.pr*TL+TL/2;
-      ctx.save();ctx.shadowBlur=14;ctx.shadowColor='#f97316';
-      ctx.fillStyle='#ea580c';ctx.beginPath();ctx.ellipse(x,y+2,TL*.35,TL*.3,0,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle='#fb923c';ctx.beginPath();ctx.ellipse(x,y-TL*.17,TL*.26,TL*.24,0,0,Math.PI*2);ctx.fill();
+      const spd=s.playerSpd===2;
+      ctx.save();
+      ctx.shadowBlur=spd?20:14;ctx.shadowColor=spd?'#22c55e':'#f97316';
+      ctx.fillStyle=spd?'#16a34a':'#ea580c';
+      ctx.beginPath();ctx.ellipse(x,y+2,TL*.35,TL*.3,0,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=spd?'#4ade80':'#fb923c';
+      ctx.beginPath();ctx.ellipse(x,y-TL*.17,TL*.26,TL*.24,0,0,Math.PI*2);ctx.fill();
       ctx.shadowBlur=0;
       ctx.fillStyle='#fff';
       ctx.beginPath();ctx.arc(x-3.5,y-TL*.19,2.5,0,Math.PI*2);ctx.fill();
@@ -4668,26 +5143,32 @@ function BlastZone({game,name,onEnd,onBack}){
       ctx.fillStyle='#111';
       ctx.beginPath();ctx.arc(x-3.5,y-TL*.19,1.2,0,Math.PI*2);ctx.fill();
       ctx.beginPath();ctx.arc(x+3.5,y-TL*.19,1.2,0,Math.PI*2);ctx.fill();
+      // Speed boost indicator
+      if(spd){
+        ctx.fillStyle='#22c55e';ctx.font='bold 8px monospace';ctx.textAlign='center';
+        ctx.fillText('⚡',x,y-TL*.45);
+      }
       ctx.restore();
     }
 
-    // Particles
+    // Particles / score popups
     for(const p of s.pts){
       ctx.save();ctx.globalAlpha=Math.min(1,p.life/16);
       ctx.fillStyle=p.col;ctx.font='bold 9px monospace';ctx.textAlign='center';
       ctx.fillText(p.txt,p.x,p.y);ctx.restore();
     }
 
-    // Overlay
+    // Win/Lose overlay
     if(s.phase==='win'||s.phase==='lose'){
-      ctx.fillStyle='rgba(0,0,0,.7)';ctx.fillRect(0,0,GW,GH);
+      ctx.fillStyle='rgba(0,0,0,.72)';ctx.fillRect(0,0,GW,GH);
       ctx.textAlign='center';
       if(s.phase==='win'){
-        ctx.fillStyle='#fbbf24';ctx.font='bold 18px monospace';ctx.fillText('LEVEL CLEAR! 💥',GW/2,GH/2-8);
-        ctx.fillStyle='#6bcb77';ctx.font='12px monospace';ctx.fillText(s.lv<3?'NEXT →':'ALL CLEAR! 🏆',GW/2,GH/2+14);
+        ctx.fillStyle='#fbbf24';ctx.font='bold 17px monospace';ctx.fillText('LEVEL CLEAR! 💥',GW/2,GH/2-10);
+        ctx.fillStyle='#6bcb77';ctx.font='11px monospace';
+        ctx.fillText(s.lv<LVS.length?'NEXT LEVEL →':'ALL CLEAR! 🏆',GW/2,GH/2+12);
       } else {
-        ctx.fillStyle='#ef4444';ctx.font='bold 18px monospace';ctx.fillText('BOOM! 💀',GW/2,GH/2-8);
-        ctx.fillStyle='#aaa';ctx.font='12px monospace';ctx.fillText(s.lives>1?'Retry...':'GAME OVER',GW/2,GH/2+14);
+        ctx.fillStyle='#ef4444';ctx.font='bold 17px monospace';ctx.fillText('BOOM! 💀',GW/2,GH/2-10);
+        ctx.fillStyle='#aaa';ctx.font='11px monospace';ctx.fillText(s.lives>1?'Retry...':'GAME OVER',GW/2,GH/2+12);
       }
     }
   }
@@ -4701,13 +5182,13 @@ function BlastZone({game,name,onEnd,onBack}){
   function startGame(){
     if(rafRef.current) cancelAnimationFrame(rafRef.current);
     gs.current=newState(1,0,3);
+    moveCooldown.current=0;
     running.current=true;
     setScreen('run');
-    setHud({score:0,lives:3,lv:1,time:120});
+    setHud({score:0,lives:3,lv:1,time:130});
     rafRef.current=requestAnimationFrame(gameLoop);
   }
 
-  // Keyboard
   useEffect(()=>{
     const h=e=>{
       if(e.key==='ArrowUp'||e.key==='w'){e.preventDefault();doMove('up');}
@@ -4725,7 +5206,6 @@ function BlastZone({game,name,onEnd,onBack}){
     if(rafRef.current) cancelAnimationFrame(rafRef.current);
   },[]);
 
-  // Simple reliable button
   const MBtn=({onAct,children,bStyle={}})=>React.createElement('div',{
     style:{
       width:64,height:64,
@@ -4736,22 +5216,36 @@ function BlastZone({game,name,onEnd,onBack}){
       fontSize:'1.6rem',
       userSelect:'none',WebkitUserSelect:'none',
       WebkitTapHighlightColor:'transparent',
-      touchAction:'none',
-      cursor:'pointer',
+      touchAction:'none',cursor:'pointer',
       boxShadow:'0 3px 12px rgba(0,0,0,.5)',
       ...bStyle,
     },
     onPointerDown(e){e.preventDefault();onAct();}
   },children);
 
+  // Power-up status bar
+  const PuBar=()=>{
+    const s=gs.current; if(!s) return null;
+    return React.createElement('div',{
+      style:{display:'flex',gap:6,justifyContent:'center',marginTop:4,fontSize:'.7rem',fontFamily:'monospace'}
+    },[
+      React.createElement('span',{key:'r',style:{color:'#f97316',background:'rgba(249,115,22,.1)',padding:'2px 7px',borderRadius:6,border:'1px solid rgba(249,115,22,.3)'}},
+        `💥 Range: ${s.bRange}`),
+      React.createElement('span',{key:'b',style:{color:'#ef4444',background:'rgba(239,68,68,.1)',padding:'2px 7px',borderRadius:6,border:'1px solid rgba(239,68,68,.3)'}},
+        `💣 Bombs: ${s.maxBombs}`),
+      s.playerSpd===2&&React.createElement('span',{key:'s',style:{color:'#22c55e',background:'rgba(34,197,94,.1)',padding:'2px 7px',borderRadius:6,border:'1px solid rgba(34,197,94,.3)'}},
+        '🚀 FAST'),
+    ].filter(Boolean));
+  };
+
   return (
     <div style={{textAlign:'center',padding:'.4rem',width:'100%',maxWidth:420,margin:'0 auto'}}>
       <TopBar name={name} onBack={()=>{running.current=false;if(rafRef.current)cancelAnimationFrame(rafRef.current);onBack();}} game={game}/>
 
       {screen==='run'&&<>
-        <div style={{display:'flex',justifyContent:'space-between',padding:'3px 8px',background:'rgba(0,0,0,.7)',borderRadius:'8px 8px 0 0',maxWidth:GW,margin:'0 auto',fontFamily:'monospace',fontSize:'.72rem',fontWeight:700}}>
+        <div style={{display:'flex',justifyContent:'space-between',padding:'3px 8px',background:'rgba(0,0,0,.7)',borderRadius:'8px 8px 0 0',maxWidth:GW,margin:'0 auto',fontFamily:'monospace',fontSize:'.7rem',fontWeight:700}}>
           <span style={{color:'#fbbf24'}}>⭐{hud.score}</span>
-          <span style={{color:'#fff'}}>LVL {hud.lv}/3</span>
+          <span style={{color:'#fff'}}>LV {hud.lv}/{LVS.length}</span>
           <span style={{color:hud.time<=20?'#ef4444':'#6bcb77'}}>⏱{hud.time}s</span>
           <span style={{color:'#f87171'}}>❤️×{hud.lives}</span>
         </div>
@@ -4761,8 +5255,9 @@ function BlastZone({game,name,onEnd,onBack}){
             border:'2px solid rgba(249,115,22,.4)',borderTop:'none',
             borderRadius:'0 0 8px 8px',touchAction:'none'}}/>
 
-        <div style={{marginTop:12,display:'flex',alignItems:'center',justifyContent:'center',gap:24}}>
-          {/* D-Pad */}
+        <PuBar/>
+
+        <div style={{marginTop:8,display:'flex',alignItems:'center',justifyContent:'center',gap:24}}>
           <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:5}}>
             <MBtn onAct={()=>doMove('up')}>⬆️</MBtn>
             <div style={{display:'flex',gap:5,alignItems:'center'}}>
@@ -4772,17 +5267,27 @@ function BlastZone({game,name,onEnd,onBack}){
             </div>
             <MBtn onAct={()=>doMove('down')}>⬇️</MBtn>
           </div>
-          {/* Bomb */}
           <MBtn onAct={doBomb} bStyle={{width:76,height:76,borderRadius:'50%',fontSize:'2rem',background:'rgba(220,38,38,.9)',border:'3px solid rgba(252,165,165,.5)',boxShadow:'0 0 20px rgba(220,38,38,.5)'}}>💣</MBtn>
         </div>
-        <div style={{color:'#333',fontSize:'.55rem',marginTop:5}}>PC: WASD / Arrows + Space</div>
+        <div style={{color:'#444',fontSize:'.55rem',marginTop:4}}>
+          💥=Blast+ &nbsp; 💣=Extra Bomb &nbsp; 🚀=Speed &nbsp;|&nbsp; Walls tod ke power-up lo!
+        </div>
       </>}
 
       {screen==='idle'&&<div style={{padding:'1rem 0'}}>
         <div style={{fontSize:'2.8rem',marginBottom:'.4rem'}}>💣</div>
         <div style={{fontFamily:'monospace',fontSize:'1.1rem',fontWeight:900,color:'#f97316',marginBottom:'.4rem'}}>BLAST ZONE</div>
-        <div style={{color:'#555',fontSize:'.76rem',marginBottom:'1rem',lineHeight:1.75}}>
-          NOVA ko control karo — Aliens ko blast karo!<br/>Walls tod ke rasta banao • 3 Levels
+        <div style={{color:'#555',fontSize:'.75rem',marginBottom:'.8rem',lineHeight:1.8}}>
+          NOVA ko control karo — Aliens ko blast karo!<br/>
+          Walls tod ke power-ups uthao • 5 Levels
+        </div>
+        <div style={{display:'flex',gap:8,justifyContent:'center',marginBottom:'1rem',flexWrap:'wrap'}}>
+          {[['💥','Blast Range+'],['💣','Extra Bomb'],['🚀','Speed Boost'],['👾','+300 pts'],['⏱','130s/level']].map(([e,l])=>(
+            <div key={e} style={{background:'rgba(249,115,22,.08)',borderRadius:9,padding:'.3rem .5rem',border:'1px solid rgba(249,115,22,.2)',textAlign:'center',minWidth:58}}>
+              <div style={{fontSize:'.95rem'}}>{e}</div>
+              <div style={{color:'#555',fontSize:'.5rem',marginTop:1}}>{l}</div>
+            </div>
+          ))}
         </div>
         <button onClick={startGame} style={GB(game.c[0],game.c[1],{maxWidth:220,margin:'0 auto'})}>💣 Start!</button>
       </div>}
