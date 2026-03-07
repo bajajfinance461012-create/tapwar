@@ -193,6 +193,95 @@ window._triggerPopunder = function(){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <script>
+  // ===== FIREBASE CONFIG (Login + Coins + Progress) =====
+  window.FB_CONFIG = {
+    apiKey: "AIzaSyB4eCzRS8sRH5gVuUqEydUT2YMnxyFSS0g",
+    authDomain: "tapwar-ultra.firebaseapp.com",
+    projectId: "tapwar-ultra",
+    storageBucket: "tapwar-ultra.firebasestorage.app",
+    messagingSenderId: "354243297375",
+    appId: "1:354243297375:web:050a94723e3d6318829bea"
+  };
+
+  // Firebase CDN load karo
+  (function(){
+    var s1 = document.createElement('script');
+    s1.src = "https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js";
+    s1.onload = function(){
+      var s2 = document.createElement('script');
+      s2.src = "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js";
+      s2.onload = function(){
+        try {
+          if(!firebase.apps.length) firebase.initializeApp(window.FB_CONFIG);
+          window._db = firebase.firestore();
+          window._fbReady = true;
+          console.log("✅ Firebase ready!");
+        } catch(e){ console.warn("Firebase init failed:", e); }
+      };
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s1);
+  })();
+
+  // Firebase pe user register karo
+  window.fbRegister = async function(name, hash) {
+    if(!window._db) return { ok: false, msg: "❌ Connection error! Internet check karo." };
+    try {
+      const key = name.trim().toLowerCase();
+      const ref = window._db.collection("users").doc(key);
+      const doc = await ref.get();
+      if(doc.exists) return { ok: false, msg: "⚠️ Yeh naam le liya gaya! Dusra naam ya login karo." };
+      await ref.set({ name: name.trim(), hash, coins: 0, createdAt: Date.now(), updatedAt: Date.now() });
+      return { ok: true };
+    } catch(e) { return { ok: false, msg: "❌ Error: " + e.message }; }
+  };
+
+  // Firebase se login verify karo
+  window.fbLogin = async function(name, hash) {
+    // Pehle localStorage check (offline / fast)
+    const key = name.trim().toLowerCase();
+    try {
+      const local = localStorage.getItem("tw_auth_" + key);
+      if(local) {
+        const auth = JSON.parse(local);
+        if(auth.hash === hash) return { ok: true, fromCache: true };
+      }
+    } catch(e){}
+    if(!window._db) return { ok: false, msg: "❌ Connection error! Internet check karo." };
+    try {
+      const doc = await window._db.collection("users").doc(key).get();
+      if(!doc.exists) return { ok: false, msg: "❌ Account nahi mila! Pehle Register karo." };
+      const data = doc.data();
+      if(data.hash !== hash) return { ok: false, msg: "❌ Password galat hai!" };
+      // Cache locally
+      try { localStorage.setItem("tw_auth_" + key, JSON.stringify({ name: data.name, hash })); } catch(e){}
+      return { ok: true, fromCache: false };
+    } catch(e) { return { ok: false, msg: "❌ Error: " + e.message }; }
+  };
+
+  // Firebase pe player data save karo (coins, stats, etc.)
+  window.fbSavePlayer = async function(name, data) {
+    if(!window._db) return;
+    try {
+      const key = name.trim().toLowerCase();
+      await window._db.collection("users").doc(key).set(
+        { ...data, updatedAt: Date.now() },
+        { merge: true }
+      );
+    } catch(e) { console.warn("fbSavePlayer error:", e); }
+  };
+
+  // Firebase se player data load karo
+  window.fbLoadPlayer = async function(name) {
+    if(!window._db) return null;
+    try {
+      const key = name.trim().toLowerCase();
+      const doc = await window._db.collection("users").doc(key).get();
+      if(!doc.exists) return null;
+      return doc.data();
+    } catch(e) { return null; }
+  };
+
   // ===== JSONBIN CONFIG =====
   // Step 1: jsonbin.io pe FREE account banao
   // Step 2: New Bin banao (koi bhi JSON: {} dalo), BIN ID copy karo
@@ -609,6 +698,7 @@ function App(){
   const [adUsed,setAdUsed]=useState(false);
   const gamesPlayedCount=useRef(0); // tracks games for popunder every 5
   const [ni,setNi]=useState(""); const [ii,setIi]=useState("FAIZAN"); const [wa,setWa]=useState(false);
+  const [pw,setPw]=useState(""); const [loginMode,setLoginMode]=useState("login"); // login | register | guest
   const [infoGame,setInfoGame]=useState(null);
   const [lbTab,setLbTab]=useState("scores");
   const [soundOn,setSoundOn]=useState(true);
@@ -672,9 +762,13 @@ function App(){
         gameHistory: newHistory, dailyDone: newDailyDone, dailyDoneDate: new Date().toDateString(),
         playerTitle: newTitle||playerTitle, ownedTitles: newOwnedTitles||ownedTitles, owned: newOwned||owned
       };
-      // Use _secSave if available (same as what _secLoad reads)
+      // LocalStorage save (fast, offline)
       if(window._secSave){ window._secSave(key, data); }
       else { localStorage.setItem(key, JSON.stringify(data)); }
+      // Firebase save (cloud, any device) — Guest ke liye skip karo
+      if(name && !name.startsWith("Guest_") && window.fbSavePlayer){
+        window.fbSavePlayer(name, data);
+      }
     } catch(e){}
   };
 
@@ -721,19 +815,77 @@ function App(){
   },[]);
 
   const rfB=useCallback(()=>setBoard([...gBoard]),[]);
-  const login=()=>{
-    const inv=ii.trim().toUpperCase(),n=ni.trim();
-    if(inv===ADMIN){setNm("ADMIN");setSc("admin");return;}
-    if(inv!==INVITE){setWa(true);setTimeout(()=>setWa(false),600);toast("❌ Galat code bhai!");return;}
+  // Auth helpers
+  function authKey(name){ return "tw_auth_"+name.trim().toLowerCase(); }
+  function hashPw(name,pw){ var s=name.toLowerCase()+":"+pw+"_twu"; var h=0; for(var i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0;} return "h"+Math.abs(h).toString(36); }
+
+  const doRegister=async()=>{
+    const n=ni.trim(), p=pw.trim();
     if(n.length<2){toast("Naam 2+ letters!");return;}
-    if(window.containsBadWord(n)){setWa(true);setTimeout(()=>setWa(false),600);toast("🚫 Yeh naam allowed nahi!");return;}
-    try{localStorage.setItem("tw_user",JSON.stringify({name:n,code:INVITE}));}catch(e){}
+    if(window.containsBadWord&&window.containsBadWord(n)){setWa(true);setTimeout(()=>setWa(false),600);toast("🚫 Yeh naam allowed nahi!");return;}
+    if(p.length<4){toast("Password 4+ characters!");return;}
+    const hash=hashPw(n,p);
+    // Firebase ready check
+    if(!window._fbReady){toast("⏳ Connecting... thoda wait karo!");await new Promise(r=>setTimeout(r,2000));}
+    if(!window._fbReady){toast("❌ Firebase connect nahi hua! Internet check karo.");return;}
+    toast("⏳ Account bana raha hai...",2500);
+    const res = await window.fbRegister(n, hash);
+    if(!res.ok){toast(res.msg);setWa(true);setTimeout(()=>setWa(false),600);return;}
+    // LocalStorage backup
+    try{localStorage.setItem("tw_auth_"+n.trim().toLowerCase(), JSON.stringify({name:n,hash}));}catch(e){}
+    localStorage.setItem("tw_user", JSON.stringify({name:n,code:INVITE}));
+    setNm(n); loadPlayerData(n); setSc("home");
+    window.SFX&&window.SFX.win();
+    toast("🎉 Account ban gaya! Welcome "+n+"! ☁️✅");
+  };
+
+  const doLogin=async()=>{
+    const n=ni.trim(), p=pw.trim(), inv=ii.trim().toUpperCase();
+    if(inv===ADMIN){setNm("ADMIN");setSc("admin");return;}
+    if(n.length<2){toast("Naam likho!");return;}
+    if(p.length<4){toast("Password likho!");return;}
+    const hash=hashPw(n,p);
+    toast("⏳ Login ho raha hai...",2500);
+    // Firebase se verify karo
+    if(!window._fbReady){await new Promise(r=>setTimeout(r,2000));}
+    const res = await window.fbLogin(n, hash);
+    if(!res.ok){toast(res.msg);setWa(true);setTimeout(()=>setWa(false),600);return;}
+    localStorage.setItem("tw_user", JSON.stringify({name:n,code:INVITE}));
     setNm(n);
-    loadPlayerData(n);
+    // Firebase se player data load karo
+    if(!res.fromCache){
+      toast("☁️ Data sync ho raha hai...",2000);
+      const fbData = await window.fbLoadPlayer(n);
+      if(fbData){
+        if(fbData.stats) setStats(fbData.stats);
+        if(fbData.ul) setUl(fbData.ul);
+        if(fbData.played) setPlayed(new Set(fbData.played));
+        if(fbData.coins!=null) setCoins(Number(fbData.coins)||0);
+        if(fbData.soundOn!=null) setSoundOn(fbData.soundOn);
+        if(fbData.streak!=null) setStreak(fbData.streak);
+        if(fbData.lastPlayDate!=null) setLastPlayDate(fbData.lastPlayDate);
+        if(fbData.gameHistory) setGameHistory(fbData.gameHistory);
+        if(fbData.playerTitle!=null) setPlayerTitle(fbData.playerTitle);
+        if(fbData.ownedTitles) setOwnedTitles(fbData.ownedTitles);
+        if(fbData.owned) setOwned(fbData.owned);
+        if(fbData.dailyDone!=null){
+          const today=new Date().toDateString();
+          setDailyDone(fbData.dailyDoneDate===today?fbData.dailyDone:false);
+        }
+      } else { loadPlayerData(n); }
+    } else { loadPlayerData(n); }
     setSc("home");
     window.SFX&&window.SFX.win();
-    toast("🎮 Welcome "+n+"!");
+    toast(res.fromCache ? "🎮 Wapas aaye "+n+"! 👋" : "🎮 Cloud se login! Wapas aaye "+n+"! ☁️✅");
   };
+
+  const doGuest=()=>{
+    const gn="Guest_"+Math.floor(Math.random()*9000+1000);
+    setNm(gn); setSc("home");
+    toast("👤 Guest ke roop mein khel rahe ho — progress save nahi hogi!");
+  };
+
+  const login=doLogin;
   const onEnd=useCallback((rawScore,gid)=>{
     // ANTI-CHEAT: Score validation
     const MAX_SCORES={tapwar:300,reaction:1300,memory:30,whack:60,stroop:60,mathblitz:60,simon:30,wordjum:20,rps:7,balloon:50,highlow:20,emojimem:20,numguess:100,colorflash:20,truefalse:60,tictac:5,typeeasy:60,oddout:30,coinflip:50,dotcon:50,snake:500,flappy:200,g2048:2048,nummem:20,tetris:9999,minesweep:100,breakout:500,typehard:40,gridmem:30,mathchain:50,wordchain:30,reflex:50,pattern:30,colornum:30,sudoku:100,anagram:20,gravity:300,calcchain:50,speedclick:200,colorpick:20,trivia:20,pingpong:50,breathe:100,emoji_quiz:20,fastmath:50,wordlen:30,carddash:9999,fruitslice:9999,mazeescape:9999,towerstack:9999,cardodge:9999,stackit:50,colorlines:200,numbomb:100,zipzap:500,bubbleshoot:300,knifehit:200,cricket:200,soccer:100,chess_q:3,dotcon:50,coinflip:50,reflex:50,default:9999};
@@ -815,24 +967,63 @@ function App(){
   },[gr,nm,board]);
 
   if(sc==="login")return(
-    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",padding:"1rem"}}>
+    <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",padding:"1rem",background:"linear-gradient(135deg,#08080f,#0f0a1a)"}}>
       <Toast toasts={toasts}/>
-      <div style={{textAlign:"center",maxWidth:310,width:"100%",animation:"fadeUp .5s"}}>
-        <div style={{fontSize:"3rem"}}>🎮</div>
-        <h1 style={{fontSize:"2rem",fontWeight:900,fontFamily:"'Orbitron',sans-serif",background:"linear-gradient(90deg,#ff6b6b,#ffd93d,#6bcb77,#4d96ff,#a855f7)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",letterSpacing:"2px"}}>TAP WAR</h1>
-        <div style={{fontFamily:"'Orbitron',sans-serif",letterSpacing:"8px",color:"#1a1a1a",fontSize:".68rem",marginBottom:".5rem"}}>ULTRA</div>
-        <p style={{color:"#ffd93d",fontSize:".78rem",marginBottom:"1.5rem",fontFamily:"'Orbitron',sans-serif",letterSpacing:"2px"}}>👑 VIP ENTRY ONLY 👑</p>
-        <div style={{animation:wa?"shake .5s":"none"}}>
-          <input value={ni} onChange={e=>setNi(e.target.value)} onKeyDown={e=>e.key==="Enter"&&login()} placeholder="Apna naam..." maxLength={18} style={{...IST,borderColor:ni.length>1&&window.containsBadWord(ni)?"#ff4444":undefined}}/>
-          {ni.length>1&&window.containsBadWord(ni)&&<div style={{color:"#ff4444",fontSize:".72rem",marginTop:"-.5rem",marginBottom:".5rem",textAlign:"center"}}>🚫 Yeh naam allowed nahi!</div>}
-          <input value={ii} onChange={e=>setIi(e.target.value)} onKeyDown={e=>e.key==="Enter"&&login()} placeholder="Secret code..." maxLength={20} style={{...IST,letterSpacing:"4px",textTransform:"uppercase",textAlign:"center"}}/>
+      <div style={{textAlign:"center",maxWidth:320,width:"100%",animation:"fadeUp .5s"}}>
+        {/* Logo */}
+        <div style={{fontSize:"2.8rem",marginBottom:".2rem"}}>🎮</div>
+        <h1 style={{fontSize:"2rem",fontWeight:900,fontFamily:"'Orbitron',sans-serif",background:"linear-gradient(90deg,#ff6b6b,#ffd93d,#6bcb77,#4d96ff,#a855f7)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",letterSpacing:"2px",margin:0}}>TAP WAR</h1>
+        <div style={{fontFamily:"'Orbitron',sans-serif",letterSpacing:"8px",color:"rgba(255,255,255,.12)",fontSize:".62rem",marginBottom:"1.4rem"}}>ULTRA</div>
+
+        {/* Tab: Login / Sign Up */}
+        <div style={{display:"flex",background:"rgba(255,255,255,.05)",borderRadius:14,padding:3,marginBottom:"1.2rem",border:"1px solid rgba(255,255,255,.08)"}}>
+          {[["login","🔑 Login"],["register","📝 Sign Up"]].map(([mode,label])=>(
+            <button key={mode} onClick={()=>setLoginMode(mode)} style={{flex:1,padding:".55rem",border:"none",borderRadius:11,cursor:"pointer",fontFamily:"inherit",fontSize:".82rem",fontWeight:700,transition:"all .2s",
+              background:loginMode===mode?"linear-gradient(135deg,#7c3aed,#4d96ff)":"transparent",
+              color:loginMode===mode?"#fff":"#555"}}>
+              {label}
+            </button>
+          ))}
         </div>
-        <button onClick={login} style={GB("#ff6b6b","#ffd93d")}>🚀 Enter Karo</button>
-        <p style={{color:"#ffd93d44",fontSize:".62rem",marginTop:".8rem"}}>🔐 VIP code nahi? Invite lo 😎</p>
-        <div style={{marginTop:"1.5rem",paddingTop:".8rem",borderTop:"1px solid rgba(255,255,255,.04)"}}>
-          <div style={{fontSize:".6rem",color:"#1f1f1f",textAlign:"center",letterSpacing:".5px"}}>© 2025 TAP WAR ULTRA — by <span style={{color:"#2a2a2a",fontWeight:700}}>Faizan</span></div>
-          <div style={{fontSize:".55rem",color:"#1a1a1a",textAlign:"center",marginTop:"2px"}}>Unauthorized distribution prohibited 🔒</div>
+
+        {/* Fields */}
+        <div style={{animation:wa?"shake .4s":"none"}}>
+          <input
+            value={ni} onChange={e=>setNi(e.target.value)}
+            onKeyDown={e=>e.key==="Enter"&&(loginMode==="register"?doRegister():doLogin())}
+            placeholder="👤 Username" maxLength={18}
+            style={{...IST, borderColor:ni.length>1&&window.containsBadWord&&window.containsBadWord(ni)?"#ff4444":undefined}}
+          />
+          {ni.length>1&&window.containsBadWord&&window.containsBadWord(ni)&&
+            <div style={{color:"#ff4444",fontSize:".72rem",marginTop:"-.4rem",marginBottom:".5rem"}}>🚫 Yeh naam allowed nahi!</div>}
+          <input
+            type="password" value={pw} onChange={e=>setPw(e.target.value)}
+            onKeyDown={e=>e.key==="Enter"&&(loginMode==="register"?doRegister():doLogin())}
+            placeholder="🔒 Password" maxLength={32}
+            style={{...IST}}
+          />
         </div>
+
+        {/* Main action button */}
+        {loginMode==="register"
+          ? <button onClick={doRegister} style={GB("#6bcb77","#4d96ff",{width:"100%"})}>📝 Account Banao</button>
+          : <button onClick={doLogin}    style={GB("#ff6b6b","#ffd93d",{width:"100%"})}>🚀 Login Karo</button>
+        }
+
+        {/* Divider */}
+        <div style={{display:"flex",alignItems:"center",gap:8,margin:".9rem 0"}}>
+          <div style={{flex:1,height:1,background:"rgba(255,255,255,.07)"}}/>
+          <span style={{color:"#333",fontSize:".7rem"}}>ya</span>
+          <div style={{flex:1,height:1,background:"rgba(255,255,255,.07)"}}/>
+        </div>
+
+        {/* Guest */}
+        <button onClick={doGuest} style={{width:"100%",padding:".6rem",background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.1)",borderRadius:12,color:"#555",fontFamily:"inherit",fontSize:".82rem",cursor:"pointer",fontWeight:600}}>
+          👤 Guest ke roop mein khelo
+        </button>
+        <div style={{color:"#2a2a2a",fontSize:".6rem",marginTop:".4rem"}}>Guest mein progress save nahi hogi</div>
+
+        <div style={{marginTop:"1.4rem",color:"#1f1f1f",fontSize:".55rem"}}>© 2025 TAP WAR ULTRA — by Faizan</div>
       </div>
     </div>
   );
