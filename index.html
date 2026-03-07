@@ -94,6 +94,101 @@ document.addEventListener("DOMContentLoaded",function(){
   document.body.appendChild(wm);
 });
 </script>
+
+<script>
+// ===== ANTI-CHEAT SECURITY SYSTEM =====
+(function(){
+  'use strict';
+  var _S = "TWU_FAIZAN_2025_" + screen.width + screen.height;
+  function _hash(str){var h=0;for(var i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0;}return Math.abs(h).toString(36);}
+
+  window._secSave = function(key, obj){
+    try{
+      var str=JSON.stringify(obj);
+      var sig=_hash(str+_S);
+      localStorage.setItem(key, JSON.stringify({d:btoa(unescape(encodeURIComponent(str))),s:sig}));
+    }catch(e){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e2){}}
+  };
+
+  window._secLoad = function(key){
+    try{
+      var raw=localStorage.getItem(key);
+      if(!raw) return null;
+      var parsed=JSON.parse(raw);
+      if(!parsed.d||!parsed.s) return parsed;
+      var str=decodeURIComponent(escape(atob(parsed.d)));
+      if(_hash(str+_S)!==parsed.s){localStorage.removeItem(key);return null;}
+      return JSON.parse(str);
+    }catch(e){return null;}
+  };
+
+  window._validateCoins = function(newC, oldC){
+    if(typeof newC!=='number'||isNaN(newC)) return oldC||0;
+    if(newC-oldC > 500) return (oldC||0)+500;
+    if(newC > 999999) return 999999;
+    if(newC < 0) return 0;
+    return newC;
+  };
+
+  var _blocked=false;
+  function _block(){
+    if(_blocked) return; _blocked=true;
+    try{
+      var k=localStorage.getItem("tw_user");
+      if(k){var u=JSON.parse(k);if(u&&u.name){var pk="tw_pdata_"+u.name.toLowerCase();var d=window._secLoad(pk);if(d){d.coins=0;window._secSave(pk,d);}}}
+    }catch(e){}
+    document.body.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#04040f;color:#fff;font-family:monospace;text-align:center;padding:2rem;"><div style="font-size:3rem;margin-bottom:1rem">\u{1F6AB}</div><div style="font-size:1.1rem;color:#ff4444;margin-bottom:.5rem;font-weight:bold;">CHEATING DETECTED</div><div style="font-size:.75rem;color:#555;margin-bottom:1rem;">Account reset kar diya gaya.</div><div style="font-size:.65rem;color:#333;">TAP WAR ULTRA — Fair Play Only</div></div>';
+  }
+
+  // DevTools window size detect
+  var _dt=false;
+  setInterval(function(){
+    var w=window.outerWidth-window.innerWidth>160;
+    var h=window.outerHeight-window.innerHeight>160;
+    if((w||h)&&!_dt){_dt=true;_block();}
+    else if(!w&&!h){_dt=false;}
+  },1500);
+
+  // Debugger timing detect
+  setInterval(function(){
+    var t=performance.now();
+    (function(){}).constructor("debugger")();
+    if(performance.now()-t>80) _block();
+  },3000);
+
+  // Right click disable
+  document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+
+  // F12 + DevTools shortcuts disable
+  document.addEventListener('keydown',function(e){
+    if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C','K'].indexOf(e.key.toUpperCase())>-1)||(e.ctrlKey&&['u','U','s','S'].indexOf(e.key)>-1)){
+      e.preventDefault();e.stopPropagation();return false;
+    }
+  },true);
+
+  // localStorage coin cap
+  var _orig=localStorage.setItem.bind(localStorage);
+  localStorage.setItem=function(key,val){
+    if(key&&key.indexOf('tw_pdata_')===0){
+      try{var obj=JSON.parse(val);if(obj&&typeof obj.coins==='number'){if(obj.coins>999999)obj.coins=999999;if(isNaN(obj.coins))obj.coins=0;}val=JSON.stringify(obj);}catch(e){}
+    }
+    return _orig(key,val);
+  };
+})();
+</script>
+
+<script>
+// ===== POPUNDER TRIGGER =====
+window._triggerPopunder = function(){
+  try{
+    // Re-inject popunder script to trigger it
+    var s = document.createElement('script');
+    s.src = 'https://pl28864746.effectivegatecpm.com/89/b1/0b/89b10b3650578d8d95f6cdbf99033036.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }catch(e){}
+};
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
@@ -506,6 +601,7 @@ function App(){
   const [stats,setStats]=useState({total:0,best:{}});
   const [coins,setCoins]=useState(0);
   const [showReward,setShowReward]=useState(false);
+  const gamesPlayedCount=useRef(0); // tracks games for popunder every 5
   const [ni,setNi]=useState(""); const [ii,setIi]=useState("FAIZAN"); const [wa,setWa]=useState(false);
   const [infoGame,setInfoGame]=useState(null);
   const [lbTab,setLbTab]=useState("scores");
@@ -625,7 +721,11 @@ function App(){
     window.SFX&&window.SFX.win();
     toast("🎮 Welcome "+n+"!");
   };
-  const onEnd=useCallback((score,gid)=>{
+  const onEnd=useCallback((rawScore,gid)=>{
+    // ANTI-CHEAT: Score validation
+    const MAX_SCORES={tapwar:300,reaction:1300,memory:30,whack:60,stroop:60,mathblitz:60,simon:30,wordjum:20,rps:7,balloon:50,highlow:20,emojimem:20,numguess:100,colorflash:20,truefalse:60,tictac:5,typeeasy:60,oddout:30,coinflip:50,dotcon:50,snake:500,flappy:200,g2048:2048,nummem:20,tetris:9999,minesweep:100,breakout:500,typehard:40,gridmem:30,mathchain:50,wordchain:30,reflex:50,pattern:30,colornum:30,sudoku:100,anagram:20,gravity:300,calcchain:50,speedclick:200,colorpick:20,trivia:20,pingpong:50,breathe:100,emoji_quiz:20,fastmath:50,wordlen:30,carddash:9999,stackit:50,colorlines:200,numbomb:100,zipzap:500,bubbleshoot:300,knifehit:200,cricket:200,soccer:100,chess_q:3,volleyball:50,dotcon:50,coinflip:50,reflex:50,default:9999};
+    const cap = MAX_SCORES[gid] || MAX_SCORES.default;
+    const score = (typeof rawScore==='number'&&!isNaN(rawScore)) ? Math.min(Math.max(0,Math.floor(rawScore)),cap) : 0;
     saveScoreToFirebase(nm,score,gid);
     // Weekly board update
     const weekStart=new Date(Date.now()-new Date().getDay()*86400000);weekStart.setHours(0,0,0,0);
@@ -674,6 +774,11 @@ function App(){
     toast("💰 +" + earned + " coins!", 2000);
     savePlayerData(nm, newStats, newUl, np, finalCoins, soundOn, newStreak, newLastPlayDate, newHistory, newDailyDone);
     if(score>0)confetti();
+    // POPUNDER: every 5 games
+    gamesPlayedCount.current += 1;
+    if(gamesPlayedCount.current % 5 === 0){
+      setTimeout(()=>{ window._triggerPopunder && window._triggerPopunder(); }, 1500);
+    }
     setGr({score,gid,earned});setSc("result");
   },[nm,played,ul,stats,coins,toast,streak,lastPlayDate,dailyGame,dailyDone,gameHistory,soundOn]);
   const goGame=useCallback(g=>{window.SFX&&window.SFX.click();setInfoGame(null);setAg(g);setSc("game");},[]);
@@ -857,30 +962,42 @@ function App(){
         }
       },100);
 
-      // Countdown and reward
-      let t=15;
+      // ANTI-CHEAT: Real timestamp based timer — setInterval manipulation proof
+      const AD_DURATION = 15000; // 15 seconds in ms
+      const adStartTime = Date.now();
+      let adCompleted = false;
       const el=document.getElementById('tw_ad_timer');
-      if(el) el.textContent=t+'s';
+      if(el) el.textContent='15s';
       const iv=setInterval(()=>{
-        t--;
+        const elapsed = Date.now() - adStartTime;
+        const remaining = Math.max(0, Math.ceil((AD_DURATION - elapsed)/1000));
         const el2=document.getElementById('tw_ad_timer');
-        if(el2) el2.textContent=t+'s';
-        if(t<=0){
+        if(el2) el2.textContent=remaining+'s';
+        // Only complete if REAL 15s have passed
+        if(elapsed >= AD_DURATION && !adCompleted){
+          adCompleted = true;
           clearInterval(iv);
           const bonus=gr.earned||5;
-          const newCoins=coins+bonus;
+          const newCoins=window._validateCoins ? window._validateCoins(coins+bonus, coins) : coins+bonus;
           setCoins(newCoins);
           window.SFX&&window.SFX.coin();
           try{
             const key="tw_pdata_"+nm.toLowerCase();
-            const d=JSON.parse(localStorage.getItem(key)||"{}");
-            d.coins=newCoins;
-            localStorage.setItem(key,JSON.stringify(d));
+            const d=window._secLoad?window._secLoad(key):JSON.parse(localStorage.getItem(key)||"{}");
+            if(d){d.coins=newCoins;window._secSave?window._secSave(key,d):localStorage.setItem(key,JSON.stringify(d));}
           }catch(e){}
           setShowReward(false);
           toast("🎉 +"+bonus+" bonus coins!", 3000);
+          // POPUNDER: trigger on watch ad complete
+          setTimeout(()=>{ window._triggerPopunder && window._triggerPopunder(); }, 500);
         }
-      },1000);
+        // If someone manipulates setInterval speed, detect it
+        if(elapsed < 0 || elapsed > AD_DURATION * 3){
+          clearInterval(iv);
+          setShowReward(false);
+          toast("⚠️ Error — try again", 2000);
+        }
+      },500);
     };
     return <div style={{textAlign:"center",padding:"1.5rem 1rem 2rem",maxWidth:400,margin:"0 auto",animation:"bounceIn .5s"}}>
       <Toast toasts={toasts}/><Conf p={conf}/>
