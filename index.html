@@ -888,9 +888,7 @@ function App(){
   const login=doLogin;
   const onEnd=useCallback((rawScore,gid)=>{
     // ANTI-CHEAT: Score validation
-    const MAX_SCORES={tapwar:300,reaction:1300,memory:30,whack:60,stroop:60,mathblitz:60,simon:30,wordjum:20,rps:7,balloon:50,highlow:20,emojimem:20,numguess:100,colorflash:20,truefalse:60,tictac:5,typeeasy:60,oddout:30,coinflip:50,dotcon:50,snake:500,flappy:200,g2048:2048,nummem:20,tetris:9999,minesweep:100,breakout:500,typehard:40,gridmem:30,mathchain:50,wordchain:30,reflex:50,pattern:30,colornum:30,sudoku:100,anagram:20,gravity:300,calcchain:50,speedclick:200,colorpick:20,trivia:20,pingpong:50,breathe:100,emoji_quiz:20,fastmath:50,wordlen:30,carddash:9999,fruitslice:9999,mazeescape:9999,towerstack:9999,cardodge:9999,stackit:50,colorlines:200,numbomb:100,zipzap:500,bubbleshoot:300,knifehit:200,cricket:200,soccer:100,chess_q:3,dotcon:50,coinflip:50,reflex:50,default:9999};
-    const cap = MAX_SCORES[gid] || MAX_SCORES.default;
-    const score = (typeof rawScore==='number'&&!isNaN(rawScore)) ? Math.min(Math.max(0,Math.floor(rawScore)),cap) : 0;
+    const score = (typeof rawScore==='number'&&!isNaN(rawScore)) ? Math.max(0,Math.floor(rawScore)) : 0;
     saveScoreToFirebase(nm,score,gid);
     // Weekly board update
     const weekStart=new Date(Date.now()-new Date().getDay()*86400000);weekStart.setHours(0,0,0,0);
