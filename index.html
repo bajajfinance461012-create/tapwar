@@ -551,6 +551,7 @@ const HG=[
 {id:"bubbleshoot",e:"🫧",n:"Bubble Shooter",c:["#0abde3","#48dbfb"],d:"Bubbles pop!",desc:"Same color bubbles ko 3+ line mein laao aur pop karo! Angle adjust karke shoot karo!",tip:"💡 Wall bounce use karo difficult angles ke liye - ricochets powerful hain!",diff:3,cat:"Puzzle"},
 {id:"knifehit",e:"🔪",n:"Knife Hit",c:["#ff6348","#ff4757"],d:"Knife throw!",desc:"Rotating log pe knives throw karo - already placed knives se mat takrao! Timing critical!",tip:"💡 Log ki speed ka pattern samjho - accelerating ya constant rotation!",diff:4,cat:"Reflex"},
 {id:"streetfight",e:"👊",n:"Street Fight",c:["#ef4444","#f97316"],d:"1v1 Fighter! AI se laro!",desc:"Classic arcade fighting game! Punch, kick, aur special moves se enemy AI ko harao. Health khatam ho toh game over!",tip:"💡 Block karo damage kam karne ke liye! Special move se zyada damage!",diff:3,cat:"Action"},{id:"bottleflip",e:"🍾",n:"Bottle Flip",c:["#06b6d4","#3b82f6"],d:"Flip karo land karo!",desc:"Bottle ko tap karke flip karo aur platform pe seedha land karao! Jitne zyada platforms, utna zyada score!",tip:"💡 Short tap = small flip, long tap = big flip! Perfect landing = bonus points!",diff:2,cat:"Reflex"},{id:"blastzone",e:"💣",n:"Blast Zone",c:["#ff6b35","#ffd93d"],d:"Bomb blast karo!",desc:"NOVA ko control karo - bombs place karo aur purple aliens ko blast karo! Walls tod ke rasta banao aur sab enemies khatam karo!",tip:"💡 Bomb place karo phir seedha hat jao - blast range mein mat rehna!",diff:3,cat:"Classic"},
+{id:"geodash",e:"🔺",n:"Geo Dash",c:["#4d96ff","#a855f7"],d:"Jump over walls!",desc:"Triangle hero ko tap karke jump karao! Automatic move hota hai - walls se bachao aur jitna ho sake aage jao! Game Idea: @shifu_diwan_27 💡",tip:"💡 Rhythm mein tap karo - walls ki timing dekho aur aik dum sahi waqt pe jump!",diff:3,cat:"Reflex"},
 ];
 const ALL=[...EG,...HG];
 const ACHV=[
@@ -580,7 +581,7 @@ const GB=(c1,c2,ex={})=>({width:"100%",padding:".8rem",borderRadius:14,border:"n
 const OB=(c,ex={})=>({width:"100%",padding:".75rem",borderRadius:14,border:`1.5px solid ${c}44`,background:`${c}0d`,color:c,fontSize:".95rem",fontWeight:700,cursor:"pointer",marginBottom:".4rem",display:"block",...ex});
 const IST={width:"100%",padding:".78rem 1rem",borderRadius:12,border:"2px solid rgba(255,255,255,.12)",background:"rgba(255,255,255,.06)",color:"#fff",fontSize:"1rem",outline:"none",boxSizing:"border-box",marginBottom:".7rem"};
 const getRE=r=>r===1?"👑":r===2?"🥈":r===3?"🥉":"#"+r;
-const NEW_GAMES=new Set(["streetfight","bottleflip","ludorush","wordsearch","wordwonder","cricket","soccer","chess_q","colorpick","pingpong","emoji_quiz","fastmath","mathchain","sudoku","mazeescape","fruitslice","cardodge","blastzone"]);
+const NEW_GAMES=new Set(["streetfight","bottleflip","ludorush","wordsearch","wordwonder","cricket","soccer","chess_q","colorpick","pingpong","emoji_quiz","fastmath","mathchain","sudoku","mazeescape","fruitslice","cardodge","blastzone","geodash"]);
 function getSeenGames(){try{const s=localStorage.getItem("tw_seen_v1");return new Set(s?JSON.parse(s):[]);}catch(e){return new Set();}}
 function markSeen(id){try{const s=getSeenGames();s.add(id);localStorage.setItem("tw_seen_v1",JSON.stringify([...s]));}catch(e){}}
 const DIFF_STARS=(d)=>["⭐","⭐⭐","⭐⭐⭐","⭐⭐⭐⭐","⭐⭐⭐⭐⭐"][Math.min(4,(d||1)-1)];
@@ -1101,7 +1102,7 @@ function App(){
         <div style={{flex:1,height:1,background:"linear-gradient(90deg,rgba(107,203,119,.4),transparent)"}}/>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:"1.2rem"}}>
-        {EG.map(g=><GCard key={g.id} g={g} best={stats.best[g.id]} onClick={()=>{SFX("click");setInfoGame(g);}} hard={false} played={played.has(g.id)} isNew={NEW_GAMES.has(g.id)&&!getSeenGames().has(g.id)}/>)}
+        {EG.map(g=><GCard key={g.id} g={g} best={stats.best[g.id]} onClick={()=>{SFX("click");markSeen(g.id);setInfoGame(g);}} hard={false} played={played.has(g.id)} isNew={NEW_GAMES.has(g.id)&&!getSeenGames().has(g.id)}/>)}
       </div>
       {/* Hard games */}
       <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:".5rem"}}>
@@ -1110,7 +1111,7 @@ function App(){
         <div style={{flex:1,height:1,background:"linear-gradient(90deg,rgba(255,128,128,.4),transparent)"}}/>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginBottom:"1.2rem"}}>
-        {HG.map(g=><GCard key={g.id} g={g} best={stats.best[g.id]} onClick={()=>{SFX("click");setInfoGame(g);}} hard={true} played={played.has(g.id)} isNew={NEW_GAMES.has(g.id)&&!getSeenGames().has(g.id)}/>)}
+        {HG.map(g=><GCard key={g.id} g={g} best={stats.best[g.id]} onClick={()=>{SFX("click");markSeen(g.id);setInfoGame(g);}} hard={true} played={played.has(g.id)} isNew={NEW_GAMES.has(g.id)&&!getSeenGames().has(g.id)}/>)}
       </div>
       {/* Bottom buttons */}
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:".6rem"}}>
@@ -1137,7 +1138,7 @@ function App(){
 
   if(sc==="game"&&ag){
     const gP={game:ag,name:nm,onEnd,onBack:()=>setSc("home")};
-    const M={tapwar:TapWar,reaction:Reaction,memory:MemGame,whack:WhackGame,stroop:StroopGame,mathblitz:MathBlitz,simon:SimonGame,wordjum:WordJumble,rps:RPSGame,balloon:BalloonGame,highlow:HighLow,emojimem:EmojiMatch,numguess:NumGuess,colorflash:ColorFlash,truefalse:TrueFalse,tictac:TicTac,typeeasy:TypeEasy,oddout:OddOut,coinflip:CoinFlip,dotcon:DotConnect,cricket:CricketQuiz,soccer:SoccerTap,chess_q:ChessQuiz,snake:SnakeGame,flappy:FlappyGame,g2048:Game2048,nummem:NumMem,tetris:TetrisGame,minesweep:MineGame,breakout:Breakout,typehard:TypeHard,gridmem:GridMem,mathchain:MathChain,wordchain:WordChain,reflex:ReflexGame,pattern:PatternGame,colornum:ColorNum,sudoku:SudokuGame,anagram:Anagram,gravity:GravityGame,calcchain:CalcChain,speedclick:SpeedClick,colorpick:ColorPick,trivia:TriviaGame,pingpong:PingPong,breathe:BreatheGame,emoji_quiz:EmojiQuiz,fastmath:FastMath,wordlen:WordLen,carddash:CardDash,fruitslice:FruitSlice,mazeescape:MazeEscape,towerstack:TowerStack,cardodge:CarDodge,wordwonder:WordWonder,wordsearch:WordSearch,ludorush:LudoRush,colorlines:ColorLines,numbomb:NumBomb,zipzap:ZipZap,bubbleshoot:BubbleShoot,knifehit:KnifeHit,streetfight:StreetFight,bottleflip:BottleFlip,blastzone:BlastZone};
+    const M={tapwar:TapWar,reaction:Reaction,memory:MemGame,whack:WhackGame,stroop:StroopGame,mathblitz:MathBlitz,simon:SimonGame,wordjum:WordJumble,rps:RPSGame,balloon:BalloonGame,highlow:HighLow,emojimem:EmojiMatch,numguess:NumGuess,colorflash:ColorFlash,truefalse:TrueFalse,tictac:TicTac,typeeasy:TypeEasy,oddout:OddOut,coinflip:CoinFlip,dotcon:DotConnect,cricket:CricketQuiz,soccer:SoccerTap,chess_q:ChessQuiz,snake:SnakeGame,flappy:FlappyGame,g2048:Game2048,nummem:NumMem,tetris:TetrisGame,minesweep:MineGame,breakout:Breakout,typehard:TypeHard,gridmem:GridMem,mathchain:MathChain,wordchain:WordChain,reflex:ReflexGame,pattern:PatternGame,colornum:ColorNum,sudoku:SudokuGame,anagram:Anagram,gravity:GravityGame,calcchain:CalcChain,speedclick:SpeedClick,colorpick:ColorPick,trivia:TriviaGame,pingpong:PingPong,breathe:BreatheGame,emoji_quiz:EmojiQuiz,fastmath:FastMath,wordlen:WordLen,carddash:CardDash,fruitslice:FruitSlice,mazeescape:MazeEscape,towerstack:TowerStack,cardodge:CarDodge,wordwonder:WordWonder,wordsearch:WordSearch,ludorush:LudoRush,colorlines:ColorLines,numbomb:NumBomb,zipzap:ZipZap,bubbleshoot:BubbleShoot,knifehit:KnifeHit,streetfight:StreetFight,bottleflip:BottleFlip,blastzone:BlastZone,geodash:GeoDash};
     const G=M[ag.id];
     return <div style={{maxWidth:540,margin:"0 auto",animation:"fadeUp .3s"}}>
       <Toast toasts={toasts}/>
@@ -9235,6 +9236,240 @@ function BlastZone({game,name,onEnd,onBack}){
     </div>
   );
 }
+
+
+function GeoDash({game,name,onEnd,onBack}){
+  const W=320,GH=340;
+  const GROUND=GH-36;
+  const [score,setS]=useState(0);
+  const [ph,setPh]=useState("idle");
+  const [best,setBest]=useState(()=>{try{return parseInt(localStorage.getItem("gd_best")||"0");}catch(e){return 0;}});
+
+  const cR=useRef(null),rafR=useRef(null),phR=useRef("idle");
+  const pR=useRef({x:60,y:GROUND-22,vy:0,onGround:true,rot:0});
+  const wallsR=useRef([]);
+  const scoreR=useRef(0);
+  const frameR=useRef(0);
+  const speedR=useRef(3.2);
+  const lastWallR=useRef(240);
+  const holdR=useRef(false);   // is finger/mouse held down?
+  const jumpCoolR=useRef(0);  // cooldown between jumps
+
+  const AC=()=>window.getAC&&window.getAC();
+  const sndJump=()=>{try{const c=AC();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(480,c.currentTime);o.frequency.exponentialRampToValueAtTime(760,c.currentTime+.1);g.gain.setValueAtTime(.22,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.13);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.15);}catch(e){}};
+  const sndDie=()=>{try{const c=AC();if(!c)return;[380,260,180,90].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.type='sawtooth';o.frequency.value=f;g.gain.setValueAtTime(.3,c.currentTime+i*.09);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+i*.09+.18);o.connect(g);g.connect(c.destination);o.start(c.currentTime+i*.09);o.stop(c.currentTime+i*.09+.22);});}catch(e){}};
+  const sndPass=()=>{try{const c=AC();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(700,c.currentTime);o.frequency.exponentialRampToValueAtTime(1100,c.currentTime+.08);g.gain.setValueAtTime(.18,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.1);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.12);}catch(e){}};
+
+  const doJump=()=>{
+    const p=pR.current;
+    if(jumpCoolR.current>0)return;
+    p.vy=-5;
+    p.onGround=false;
+    jumpCoolR.current=6;
+    sndJump();
+  };
+
+  const pressStart=()=>{
+    if(phR.current==="idle"){startGame();return;}
+    if(phR.current!=="running")return;
+    holdR.current=true;
+    doJump();
+  };
+
+  const pressEnd=()=>{ holdR.current=false; };
+
+  const gameLoop=useCallback(()=>{
+    if(phR.current!=="running")return;
+    frameR.current++;
+    const spd=speedR.current;
+    if(jumpCoolR.current>0) jumpCoolR.current--;
+
+    // Hold = keep jumping when on ground
+    if(holdR.current && jumpCoolR.current===0) doJump();
+
+    // Speed ramp
+    if(frameR.current%280===0) speedR.current=Math.min(9,speedR.current+0.35);
+
+    // Spawn walls
+    lastWallR.current-=spd;
+    if(lastWallR.current<=0){
+      const gapH=95+Math.random()*35;
+      const gapY=25+Math.random()*(GROUND-gapH-55);
+      wallsR.current.push({x:W+10,gapY,gapH,w:26,passed:false});
+      lastWallR.current=300+Math.random()*150;
+    }
+
+    // Move walls
+    wallsR.current=wallsR.current.map(w=>({...w,x:w.x-spd})).filter(w=>w.x>-50);
+
+    // Physics
+    const p=pR.current;
+    p.vy=Math.min(p.vy+0.42,8);
+    p.y+=p.vy;
+    p.rot+= p.onGround ? 3 : (p.vy<0?-9:9);
+
+    // Ground
+    if(p.y>=GROUND-9){
+      p.y=GROUND-9;p.vy=0;p.onGround=true;p.jumpsLeft=2;
+    } else {
+      p.onGround=false;
+    }
+    // Ceiling
+    if(p.y<8){p.y=8;p.vy=Math.abs(p.vy)*0.3;}
+
+    // Score
+    wallsR.current.forEach(w=>{
+      if(!w.passed&&w.x+w.w<p.x-8){
+        w.passed=true;scoreR.current++;setS(scoreR.current);sndPass();
+      }
+    });
+
+    // Collision — tighter hitbox (14px radius)
+    const HR=5;
+    let dead=false;
+    wallsR.current.forEach(w=>{
+      if(p.x+HR>w.x && p.x-HR<w.x+w.w){
+        if(p.y-HR<w.gapY || p.y+HR>w.gapY+w.gapH) dead=true;
+      }
+    });
+
+    if(dead){
+      phR.current="dead";sndDie();
+      const fs=scoreR.current;
+      try{const b=parseInt(localStorage.getItem("gd_best")||"0");if(fs>b){localStorage.setItem("gd_best",""+fs);setBest(fs);}}catch(e){}
+      setTimeout(()=>{setPh("idle");phR.current="idle";},1600);
+      onEnd(fs,game.id);
+    }
+
+    // ==== DRAW ====
+    const cv=cR.current;if(!cv)return;
+    const ctx=cv.getContext("2d");
+
+    // Background
+    const bg=ctx.createLinearGradient(0,0,0,GH);
+    bg.addColorStop(0,"#162d5c");bg.addColorStop(1,"#0b1628");
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,GH);
+
+    // Moving BG grid
+    ctx.strokeStyle="rgba(77,130,255,0.07)";ctx.lineWidth=1;
+    const ts=44,off=(frameR.current*spd)%ts;
+    for(let x=-off;x<W;x+=ts) for(let y=0;y<GH;y+=ts) ctx.strokeRect(x,y,ts,ts);
+
+    // Ground
+    ctx.fillStyle="#3a80ff";ctx.fillRect(0,GROUND,W,3);
+    ctx.fillStyle="rgba(40,80,180,0.35)";ctx.fillRect(0,GROUND+3,W,GH-GROUND-3);
+
+    // Walls
+    wallsR.current.forEach(w=>{
+      [  {y:0,h:w.gapY},  {y:w.gapY+w.gapH,h:GROUND-(w.gapY+w.gapH)}  ].forEach(seg=>{
+        if(seg.h<=0)return;
+        // Main block
+        const wg=ctx.createLinearGradient(w.x,0,w.x+w.w,0);
+        wg.addColorStop(0,"#162348");wg.addColorStop(0.5,"#1e3368");wg.addColorStop(1,"#162348");
+        ctx.fillStyle=wg;ctx.fillRect(w.x,seg.y,w.w,seg.h);
+        // Border glow
+        ctx.strokeStyle="#4d96ff";ctx.lineWidth=1.5;ctx.strokeRect(w.x,seg.y,w.w,seg.h);
+        // Inner lines (block texture)
+        ctx.strokeStyle="rgba(77,150,255,0.18)";ctx.lineWidth=1;
+        for(let wy=seg.y+18;wy<seg.y+seg.h;wy+=18){
+          ctx.beginPath();ctx.moveTo(w.x+2,wy);ctx.lineTo(w.x+w.w-2,wy);ctx.stroke();
+        }
+        // Top/bottom edge glow of gap
+      });
+      // Gap edge lines
+      ctx.strokeStyle="rgba(100,200,255,0.55)";ctx.lineWidth=2;
+      if(w.gapY>0){ctx.beginPath();ctx.moveTo(w.x,w.gapY);ctx.lineTo(w.x+w.w,w.gapY);ctx.stroke();}
+      if(w.gapY+w.gapH<GROUND){ctx.beginPath();ctx.moveTo(w.x,w.gapY+w.gapH);ctx.lineTo(w.x+w.w,w.gapY+w.gapH);ctx.stroke();}
+    });
+
+    // Trail
+    for(let i=4;i>=1;i--){
+      ctx.beginPath();
+      ctx.arc(p.x - i*spd*1.8, p.y, (16-i*3), 0, Math.PI*2);
+      ctx.fillStyle=`rgba(80,180,255,${0.06*i})`;ctx.fill();
+    }
+
+    // Player triangle (rainbow, rotating)
+    ctx.save();
+    ctx.translate(p.x,p.y);
+    ctx.rotate(p.rot*Math.PI/180);
+    const gr=ctx.createLinearGradient(-18,-18,18,18);
+    gr.addColorStop(0,"#ff0080");gr.addColorStop(0.33,"#00ffaa");
+    gr.addColorStop(0.66,"#00aaff");gr.addColorStop(1,"#cc00ff");
+    ctx.fillStyle=gr;
+    ctx.beginPath();ctx.moveTo(0,-6);ctx.lineTo(6,5);ctx.lineTo(-6,5);ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle="rgba(255,255,255,0.85)";ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle="rgba(255,255,255,0.25)";
+    ctx.beginPath();ctx.moveTo(0,-3);ctx.lineTo(3,2);ctx.lineTo(-3,2);ctx.closePath();ctx.fill();
+    ctx.restore();
+
+    // HUD
+    ctx.fillStyle="rgba(255,255,255,0.88)";ctx.font="bold 15px 'Orbitron',monospace";ctx.textAlign="left";
+    ctx.fillText("⭐ "+scoreR.current,10,22);
+    ctx.fillStyle="rgba(255,255,255,0.4)";ctx.font="11px monospace";ctx.textAlign="right";
+    ctx.fillText("BEST "+best,W-8,22);
+
+    // Speed bar
+    const spdPct=(speedR.current-3.2)/(9-3.2);
+    ctx.fillStyle="rgba(255,255,255,0.08)";ctx.fillRect(8,GH-10,W-16,4);
+    ctx.fillStyle=`rgba(${Math.floor(spdPct*255)},${Math.floor((1-spdPct)*180+75)},255,0.7)`;
+    ctx.fillRect(8,GH-10,(W-16)*spdPct,4);
+
+    // Dead flash
+    if(phR.current==="dead"){
+      ctx.fillStyle="rgba(255,50,50,0.55)";ctx.fillRect(0,0,W,GH);
+      ctx.fillStyle="#fff";ctx.font="bold 24px monospace";ctx.textAlign="center";
+      ctx.fillText("💥 CRASHED!",W/2,GH/2-8);
+      ctx.fillStyle="#ffaaaa";ctx.font="14px monospace";
+      ctx.fillText("Score: "+scoreR.current,W/2,GH/2+18);
+    }
+
+    rafR.current=requestAnimationFrame(gameLoop);
+  },[onEnd,game,best]);
+
+  const startGame=()=>{
+    pR.current={x:60,y:GROUND-9,vy:0,onGround:true,rot:0,jumpsLeft:2};
+    wallsR.current=[];scoreR.current=0;frameR.current=0;
+    speedR.current=3.2;lastWallR.current=350;holdR.current=false;jumpCoolR.current=0;
+    phR.current="running";setPh("running");setS(0);
+    if(rafR.current)cancelAnimationFrame(rafR.current);
+    rafR.current=requestAnimationFrame(gameLoop);
+  };
+
+  useEffect(()=>()=>{if(rafR.current)cancelAnimationFrame(rafR.current);},[]);
+
+  // Keyboard
+  useEffect(()=>{
+    const kd=e=>{if(e.code==="Space"||e.code==="ArrowUp"){e.preventDefault();if(!e.repeat){if(phR.current==="idle"){startGame();}else{holdR.current=true;doJump();}}}};
+    const ku=e=>{if(e.code==="Space"||e.code==="ArrowUp") holdR.current=false;};
+    window.addEventListener("keydown",kd);window.addEventListener("keyup",ku);
+    return()=>{window.removeEventListener("keydown",kd);window.removeEventListener("keyup",ku);};
+  },[]);
+
+  return(<div style={{textAlign:"center",padding:"1rem .5rem",width:"100%",maxWidth:360,margin:"0 auto"}}>
+    <TopBar name={name} onBack={()=>{phR.current="idle";holdR.current=false;if(rafR.current)cancelAnimationFrame(rafR.current);onBack();}} game={game}/>
+    <div style={{textAlign:"center",marginBottom:".3rem"}}>
+      <span style={{fontSize:".68rem",fontFamily:"monospace",background:"linear-gradient(135deg,rgba(77,150,255,.15),rgba(168,85,247,.15))",border:"1px solid rgba(168,85,247,.4)",borderRadius:20,padding:"3px 12px",color:"#fff"}}>💡 Game Idea: <b style={{background:"linear-gradient(90deg,#4d96ff,#a855f7)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>@shifu_diwan_27</b></span>
+    </div>
+    <canvas ref={cR} width={W} height={GH}
+      onMouseDown={e=>{e.preventDefault();pressStart();}}
+      onMouseUp={pressEnd}
+      onMouseLeave={pressEnd}
+      onTouchStart={e=>{e.preventDefault();pressStart();}}
+      onTouchEnd={e=>{e.preventDefault();pressEnd();}}
+      style={{borderRadius:12,border:"2px solid rgba(77,150,255,0.35)",maxWidth:"100%",touchAction:"none",display:"block",margin:"0 auto",cursor:"pointer"}}/>
+    {ph==="idle"&&<div style={{marginTop:".7rem"}}>
+      <div style={{color:"#4d96ff",fontSize:".78rem",fontFamily:"monospace",marginBottom:".5rem",lineHeight:1.6}}>
+        📱 Tap karo = Jump | Rapid tap = upar jao<br/>
+        ⌨️ Space/↑ = jump
+      </div>
+      <button onClick={startGame} style={GB(game.c[0],game.c[1],{maxWidth:220,margin:"0 auto"})}>🔺 Start!</button>
+      {best>0&&<div style={{color:"#555",fontSize:".65rem",marginTop:".4rem",fontFamily:"monospace"}}>🏆 Best: {best} walls</div>}
+    </div>}
+  </div>);
+}
+
 
 ReactDOM.render(<App/>,document.getElementById("root"));
 </script>
